@@ -9,16 +9,19 @@ import SwiftUI
 
 struct PreRoundSetupScreen: View {
     @EnvironmentObject var appState: AppState
-    @State private var selectedTee = CourseModel.TeeOptionModel(name: "White Tees", color: .white, yardages: Array(repeating: 400, count: 18))
+    @State private var selectedTee = "White"
     @State private var numberOfHoles = 18
     @State private var startingHole = 1
     @State private var roundDate = Date()
-    @State private var roundType = RoundModel.RoundType.stroke
-@State private var players = [PlayerModel.samplePlayer]
+    @State private var roundType = "Stroke Play"
+    @State private var players = [PlayerSetupModel.samplePlayers[0]]
     @State private var showingTeeSelector = false
     @State private var showingStartingHoleSelector = false
     @State private var showingRoundTypeSelector = false
     @State private var showingAddPlayer = false
+    @State private var weatherConditions = "Partly Cloudy"
+    @State private var temperature = "72°F"
+    @State private var windSpeed = "8 mph"
     
     var body: some View {
         VStack(spacing: GreensheetTheme.spacingLarge) {
@@ -37,30 +40,40 @@ struct PreRoundSetupScreen: View {
                         Text("Pebble Beach Golf Links")
                             .font(GreensheetTheme.headlineFont)
                             .fontWeight(.semibold)
+                            .foregroundColor(GreensheetTheme.label)
+                        
+                        Text("Par 72 • 7,075 yards")
+                            .font(GreensheetTheme.captionFont)
+                            .foregroundColor(GreensheetTheme.secondaryLabel)
                     }
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(GreensheetTheme.backgroundSecondary)
                     .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+                    .padding(.horizontal, GreensheetTheme.spacingLarge)
                     
                     // Holes & Tees
                     VStack(alignment: .leading, spacing: GreensheetTheme.spacingMedium) {
                         Text("Holes & Tees")
-                            .font(GreensheetTheme.captionFont)
-                            .foregroundColor(.secondary)
+                            .font(GreensheetTheme.headlineFont)
+                            .fontWeight(.semibold)
+                            .foregroundColor(GreensheetTheme.label)
+                            .padding(.horizontal, GreensheetTheme.spacingLarge)
                         
                         HStack(spacing: GreensheetTheme.spacingMedium) {
                             // Tee Selector
                             Button(action: { showingTeeSelector = true }) {
                                 HStack(spacing: GreensheetTheme.spacingSmall) {
-                                    TeeColorDot(color: selectedTee.color)
-                                    Text(selectedTee.name)
+                                    Circle()
+                                        .fill(Color(selectedTee.lowercased()))
+                                        .frame(width: 20, height: 20)
+                                    Text(selectedTee)
                                         .font(GreensheetTheme.bodyFont)
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(GreensheetTheme.label)
                                     Spacer()
                                     Image(systemName: "chevron.down")
                                         .font(.caption)
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(GreensheetTheme.secondaryLabel)
                                 }
                                 .padding()
                                 .background(GreensheetTheme.backgroundSecondary)
@@ -76,7 +89,7 @@ struct PreRoundSetupScreen: View {
                                         .padding()
                                         .frame(maxWidth: .infinity)
                                         .background(numberOfHoles == 18 ? GreensheetTheme.primaryGreen : GreensheetTheme.backgroundSecondary)
-                                        .foregroundColor(numberOfHoles == 18 ? .white : .primary)
+                                        .foregroundColor(numberOfHoles == 18 ? .white : GreensheetTheme.label)
                                 }
                                 
                                 Button(action: { numberOfHoles = 9 }) {
@@ -85,101 +98,128 @@ struct PreRoundSetupScreen: View {
                                         .padding()
                                         .frame(maxWidth: .infinity)
                                         .background(numberOfHoles == 9 ? GreensheetTheme.primaryGreen : GreensheetTheme.backgroundSecondary)
-                                        .foregroundColor(numberOfHoles == 9 ? .white : .primary)
+                                        .foregroundColor(numberOfHoles == 9 ? .white : GreensheetTheme.label)
                                 }
                             }
                             .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                         }
+                        .padding(.horizontal, GreensheetTheme.spacingLarge)
                         
                         // Starting Hole
                         Button(action: { showingStartingHoleSelector = true }) {
                             HStack {
                                 Text("Starting Hole \(startingHole)")
                                     .font(GreensheetTheme.bodyFont)
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(GreensheetTheme.label)
                                 Spacer()
                                 Image(systemName: "chevron.down")
                                     .font(.caption)
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(GreensheetTheme.secondaryLabel)
                             }
                             .padding()
                             .background(GreensheetTheme.backgroundSecondary)
                             .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                         }
                         .buttonStyle(PlainButtonStyle())
-                    }
-                    
-                    // Date & Time
-                    VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
-                        Text("Date & Time")
-                            .font(GreensheetTheme.captionFont)
-                            .foregroundColor(.secondary)
-                        
-                        DatePicker("", selection: $roundDate, displayedComponents: [.date, .hourAndMinute])
-                            .datePickerStyle(CompactDatePickerStyle())
-                            .labelsHidden()
-                            .padding()
-                            .background(GreensheetTheme.backgroundSecondary)
-                            .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+                        .padding(.horizontal, GreensheetTheme.spacingLarge)
                     }
                     
                     // Round Type
-                    VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
+                    VStack(alignment: .leading, spacing: GreensheetTheme.spacingMedium) {
                         Text("Round Type")
-                            .font(GreensheetTheme.captionFont)
-                            .foregroundColor(.secondary)
+                            .font(GreensheetTheme.headlineFont)
+                            .fontWeight(.semibold)
+                            .foregroundColor(GreensheetTheme.label)
+                            .padding(.horizontal, GreensheetTheme.spacingLarge)
                         
                         Button(action: { showingRoundTypeSelector = true }) {
                             HStack {
-                                Text(roundType.rawValue)
+                                Text(roundType)
                                     .font(GreensheetTheme.bodyFont)
-                                    .foregroundColor(.primary)
+                                    .foregroundColor(GreensheetTheme.label)
                                 Spacer()
                                 Image(systemName: "chevron.down")
                                     .font(.caption)
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(GreensheetTheme.secondaryLabel)
                             }
                             .padding()
                             .background(GreensheetTheme.backgroundSecondary)
                             .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                         }
                         .buttonStyle(PlainButtonStyle())
+                        .padding(.horizontal, GreensheetTheme.spacingLarge)
                     }
                     
                     // Players
                     VStack(alignment: .leading, spacing: GreensheetTheme.spacingMedium) {
-                        Text("Players")
-                            .font(GreensheetTheme.captionFont)
-                            .foregroundColor(.secondary)
-                        
-                        VStack(spacing: GreensheetTheme.spacingSmall) {
-                            ForEach(players, id: \.id) { player in
-                                PlayerRow(player: player)
-                            }
-                        }
-                        
-                        Button(action: { showingAddPlayer = true }) {
-                            HStack(spacing: GreensheetTheme.spacingMedium) {
-                                Text("+")
+                        HStack {
+                            Text("Players")
+                                .font(GreensheetTheme.headlineFont)
+                                .fontWeight(.semibold)
+                                .foregroundColor(GreensheetTheme.label)
+                            
+                            Spacer()
+                            
+                            Button(action: { showingAddPlayer = true }) {
+                                Image(systemName: "plus.circle")
                                     .font(.title2)
-                                    .fontWeight(.bold)
-                                Text("Write-In a Player")
-                                    .font(GreensheetTheme.bodyFont)
+                                    .foregroundColor(GreensheetTheme.primaryGreen)
                             }
-                            .foregroundColor(GreensheetTheme.primaryGreen)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(GreensheetTheme.primaryGreen.opacity(0.1))
-                            .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .padding(.horizontal, GreensheetTheme.spacingLarge)
+                        
+                        VStack(spacing: 0) {
+                            ForEach(players, id: \.id) { player in
+                                PlayerSetupRow(player: player)
+                                .padding(.vertical, GreensheetTheme.spacingSmall)
+                                
+                                if player.id != players.last?.id {
+                                    Divider()
+                                        .background(GreensheetTheme.separator)
+                                        .padding(.leading, GreensheetTheme.spacingLarge)
+                                }
+                            }
+                        }
+                        .padding(.horizontal, GreensheetTheme.spacingLarge)
+                    }
+                    
+                    // Weather Conditions
+                    VStack(alignment: .leading, spacing: GreensheetTheme.spacingMedium) {
+                        Text("Weather Conditions")
+                            .font(GreensheetTheme.headlineFont)
+                            .fontWeight(.semibold)
+                            .foregroundColor(GreensheetTheme.label)
+                            .padding(.horizontal, GreensheetTheme.spacingLarge)
+                        
+                        HStack(spacing: GreensheetTheme.spacingMedium) {
+                            WeatherSetupCard(icon: "cloud.sun", label: "Conditions", value: weatherConditions, color: GreensheetTheme.primaryGreen)
+                            WeatherSetupCard(icon: "thermometer", label: "Temperature", value: temperature, color: GreensheetTheme.primaryGreen)
+                            WeatherSetupCard(icon: "wind", label: "Wind", value: windSpeed, color: GreensheetTheme.primaryGreen)
+                        }
+                        .padding(.horizontal, GreensheetTheme.spacingLarge)
+                    }
+                    
+                    // Round Date
+                    VStack(alignment: .leading, spacing: GreensheetTheme.spacingMedium) {
+                        Text("Round Date")
+                            .font(GreensheetTheme.headlineFont)
+                            .fontWeight(.semibold)
+                            .foregroundColor(GreensheetTheme.label)
+                            .padding(.horizontal, GreensheetTheme.spacingLarge)
+                        
+                        DatePicker("Round Date", selection: $roundDate, displayedComponents: [.date])
+                            .datePickerStyle(CompactDatePickerStyle())
+                            .padding()
+                            .background(GreensheetTheme.backgroundSecondary)
+                            .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+                            .padding(.horizontal, GreensheetTheme.spacingLarge)
                     }
                 }
-                .padding(.horizontal, GreensheetTheme.spacingLarge)
+                .padding(.vertical, GreensheetTheme.spacingLarge)
             }
             
-            // Tee Off Button
-            Button("Tee Off") {
+            // Start Round Button
+            Button("Start Round") {
                 appState.navigateTo(.scorecard)
             }
             .buttonStyle(GreensheetTheme.primaryButtonStyle)
@@ -187,186 +227,409 @@ struct PreRoundSetupScreen: View {
         }
         .background(GreensheetTheme.backgroundPrimary)
         .sheet(isPresented: $showingTeeSelector) {
-            TeeSelectorView(selectedTee: $selectedTee)
+            TeeSelectorSheet(selectedTee: $selectedTee)
         }
         .sheet(isPresented: $showingStartingHoleSelector) {
-            StartingHoleSelectorView(startingHole: $startingHole)
+            StartingHoleSelectorSheet(startingHole: $startingHole)
         }
         .sheet(isPresented: $showingRoundTypeSelector) {
-            RoundTypeSelectorView(roundType: $roundType)
+            RoundTypeSelectorSheet(roundType: $roundType)
         }
         .sheet(isPresented: $showingAddPlayer) {
-            AddPlayerView(players: $players)
+            AddPlayerSheet(players: $players)
         }
     }
 }
 
-struct TeeColorDot: View {
-    let color: CourseModel.TeeOptionModel.TeeColor
-    
-    var body: some View {
-        Circle()
-            .fill(teeColor)
-            .frame(width: 16, height: 16)
-    }
-    
-    private var teeColor: Color {
-        switch color {
-        case .white: return .white
-        case .blue: return .blue
-        case .red: return .red
-        case .gold: return .yellow
-        case .black: return .black
-        }
-    }
+struct PlayerSetupModel: Identifiable {
+    let id = UUID()
+    let name: String
+    let handicap: Double
+    let isSelected: Bool
+    let avatar: String
+    let lastRound: String?
 }
 
-struct PlayerRow: View {
-    let player: PlayerModel
+extension PlayerSetupModel {
+    static let samplePlayers = [
+        PlayerSetupModel(
+            name: "John Smith",
+            handicap: 12.4,
+            isSelected: true,
+            avatar: "person.circle.fill",
+            lastRound: "78 at Pebble Beach"
+        ),
+        PlayerSetupModel(
+            name: "Mike Johnson",
+            handicap: 8.2,
+            isSelected: false,
+            avatar: "person.circle.fill",
+            lastRound: "75 at Spyglass Hill"
+        ),
+        PlayerSetupModel(
+            name: "David Wilson",
+            handicap: 15.7,
+            isSelected: false,
+            avatar: "person.circle.fill",
+            lastRound: "82 at Spanish Bay"
+        ),
+        PlayerSetupModel(
+            name: "Tom Brown",
+            handicap: 6.1,
+            isSelected: false,
+            avatar: "person.circle.fill",
+            lastRound: "73 at Del Monte"
+        ),
+        PlayerSetupModel(
+            name: "Sarah Davis",
+            handicap: 18.3,
+            isSelected: false,
+            avatar: "person.circle.fill",
+            lastRound: "85 at Pacific Grove"
+        ),
+        PlayerSetupModel(
+            name: "Chris Lee",
+            handicap: 3.8,
+            isSelected: false,
+            avatar: "person.circle.fill",
+            lastRound: "71 at Bayonet"
+        )
+    ]
+}
+
+struct PlayerSetupRow: View {
+    let player: PlayerSetupModel
     
     var body: some View {
         HStack(spacing: GreensheetTheme.spacingMedium) {
+            // Player Avatar
+            Image(systemName: player.avatar)
+                .font(.title2)
+                .foregroundColor(GreensheetTheme.primaryGreen)
+                .frame(width: 40, height: 40)
+                .background(GreensheetTheme.primaryGreen.opacity(0.1))
+                .cornerRadius(GreensheetTheme.cornerRadiusSmall)
+            
+            // Player Info
             VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
                 Text(player.name)
                     .font(GreensheetTheme.bodyFont)
                     .fontWeight(.semibold)
-                    .foregroundColor(.primary)
+                    .foregroundColor(GreensheetTheme.label)
                 
-                if let handicap = player.handicap {
-                    Text("Handicap: \(handicap, specifier: "%.1f")")
+                HStack(spacing: GreensheetTheme.spacingMedium) {
+                    Text("Handicap: \(player.handicap, specifier: "%.1f")")
                         .font(GreensheetTheme.captionFont)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(GreensheetTheme.secondaryLabel)
+                    
+                    if let lastRound = player.lastRound {
+                        Text("•")
+                            .font(GreensheetTheme.captionFont)
+                            .foregroundColor(GreensheetTheme.secondaryLabel)
+                        
+                        Text(lastRound)
+                            .font(GreensheetTheme.captionFont)
+                            .foregroundColor(GreensheetTheme.secondaryLabel)
+                    }
                 }
             }
             
             Spacer()
+            
+            // Selection Indicator
+            if player.isSelected {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundColor(GreensheetTheme.primaryGreen)
+                    .font(.title2)
+            } else {
+                Image(systemName: "circle")
+                    .foregroundColor(GreensheetTheme.tertiaryLabel)
+                    .font(.title2)
+            }
         }
         .padding()
-        .background(GreensheetTheme.backgroundSecondary)
+    }
+}
+
+struct WeatherSetupCard: View {
+    let icon: String
+    let label: String
+    let value: String
+    let color: Color
+    
+    var body: some View {
+        VStack(spacing: GreensheetTheme.spacingSmall) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundColor(color)
+            
+            Text(value)
+                .font(GreensheetTheme.bodyFont)
+                .fontWeight(.semibold)
+                .foregroundColor(GreensheetTheme.label)
+            
+            Text(label)
+                .font(GreensheetTheme.smallFont)
+                .foregroundColor(GreensheetTheme.secondaryLabel)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(color.opacity(0.1))
         .cornerRadius(GreensheetTheme.cornerRadiusMedium)
     }
 }
 
-// Placeholder views for selectors
-struct TeeSelectorView: View {
-    @Binding var selectedTee: CourseModel.TeeOptionModel
+struct TeeSelectorSheet: View {
+    @Binding var selectedTee: String
     @Environment(\.dismiss) private var dismiss
+    
+    private let teeOptions = ["Championship", "Blue", "White", "Gold", "Red"]
     
     var body: some View {
         NavigationView {
-            List {
-                ForEach(CourseModel.TeeOptionModel.TeeColor.allCases, id: \.self) { color in
-                    Button(action: {
-                        selectedTee = CourseModel.TeeOptionModel(name: "\(color.rawValue) Tees", color: color, yardages: Array(repeating: 400, count: 18))
-                        dismiss()
-                    }) {
-                        HStack {
-                            TeeColorDot(color: color)
-                            Text("\(color.rawValue) Tees")
+            VStack(spacing: GreensheetTheme.spacingLarge) {
+                Text("Select Tee Box")
+                    .font(GreensheetTheme.headlineFont)
+                    .fontWeight(.semibold)
+                    .foregroundColor(GreensheetTheme.label)
+                    .padding(.top, GreensheetTheme.spacingLarge)
+                
+                VStack(spacing: 0) {
+                    ForEach(teeOptions, id: \.self) { tee in
+                        Button(action: {
+                            selectedTee = tee
+                            dismiss()
+                        }) {
+                            HStack(spacing: GreensheetTheme.spacingMedium) {
+                                Circle()
+                                    .fill(Color(tee.lowercased()))
+                                    .frame(width: 20, height: 20)
+                                
+                                Text(tee)
+                                    .font(GreensheetTheme.bodyFont)
+                                    .foregroundColor(GreensheetTheme.label)
+                                
+                                Spacer()
+                                
+                                if selectedTee == tee {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(GreensheetTheme.primaryGreen)
+                                }
+                            }
+                            .padding()
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        if tee != teeOptions.last {
+                            Divider()
+                                .background(GreensheetTheme.separator)
                         }
                     }
                 }
+                .background(GreensheetTheme.backgroundSecondary)
+                .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+                .padding(.horizontal, GreensheetTheme.spacingLarge)
+                
+                Spacer()
             }
-            .navigationTitle("Select Tees")
+            .background(GreensheetTheme.backgroundPrimary)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Cancel") { dismiss() }
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                    .foregroundColor(GreensheetTheme.primaryGreen)
                 }
             }
         }
     }
 }
 
-struct StartingHoleSelectorView: View {
+struct StartingHoleSelectorSheet: View {
     @Binding var startingHole: Int
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationView {
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 6), spacing: 10) {
-                ForEach(1...18, id: \.self) { hole in
-                    Button(action: {
-                        startingHole = hole
-                        dismiss()
-                    }) {
-                        Text("\(hole)")
-                            .font(GreensheetTheme.bodyFont)
-                            .frame(width: 50, height: 50)
-                            .background(startingHole == hole ? GreensheetTheme.primaryGreen : GreensheetTheme.backgroundSecondary)
-                            .foregroundColor(startingHole == hole ? .white : .primary)
-                            .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+            VStack(spacing: GreensheetTheme.spacingLarge) {
+                Text("Select Starting Hole")
+                    .font(GreensheetTheme.headlineFont)
+                    .fontWeight(.semibold)
+                    .foregroundColor(GreensheetTheme.label)
+                    .padding(.top, GreensheetTheme.spacingLarge)
+                
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 6), spacing: GreensheetTheme.spacingMedium) {
+                    ForEach(1...18, id: \.self) { hole in
+                        Button(action: {
+                            startingHole = hole
+                            dismiss()
+                        }) {
+                            Text("\(hole)")
+                                .font(GreensheetTheme.bodyFont)
+                                .fontWeight(.semibold)
+                                .foregroundColor(startingHole == hole ? .white : GreensheetTheme.primaryGreen)
+                                .frame(width: 50, height: 50)
+                                .background(startingHole == hole ? GreensheetTheme.primaryGreen : GreensheetTheme.backgroundSecondary)
+                                .cornerRadius(GreensheetTheme.cornerRadiusSmall)
+                        }
                     }
                 }
+                .padding(.horizontal, GreensheetTheme.spacingLarge)
+                
+                Spacer()
             }
-            .padding()
-            .navigationTitle("Select Starting Hole")
+            .background(GreensheetTheme.backgroundPrimary)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Cancel") { dismiss() }
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                    .foregroundColor(GreensheetTheme.primaryGreen)
                 }
             }
         }
     }
 }
 
-struct RoundTypeSelectorView: View {
-    @Binding var roundType: RoundModel.RoundType
+struct RoundTypeSelectorSheet: View {
+    @Binding var roundType: String
     @Environment(\.dismiss) private var dismiss
     
-    var body: some View {
-        NavigationView {
-            List {
-                ForEach(RoundModel.RoundType.allCases, id: \.self) { type in
-                    Button(action: {
-                        roundType = type
-                        dismiss()
-                    }) {
-                        Text(type.rawValue)
-                    }
-                }
-            }
-            .navigationTitle("Select Round Type")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Cancel") { dismiss() }
-                }
-            }
-        }
-    }
-}
-
-struct AddPlayerView: View {
-    @Binding var players: [PlayerModel]
-    @State private var playerName = ""
-    @State private var playerHandicap = ""
-    @Environment(\.dismiss) private var dismiss
+    private let roundTypes = ["Stroke Play", "Match Play", "Stableford", "Scramble", "Best Ball"]
     
     var body: some View {
         NavigationView {
             VStack(spacing: GreensheetTheme.spacingLarge) {
-                FormField(label: "Player Name", placeholder: "Enter player name", text: $playerName)
-                FormField(label: "Handicap (optional)", placeholder: "e.g., 12", text: $playerHandicap)
+                Text("Select Round Type")
+                    .font(GreensheetTheme.headlineFont)
+                    .fontWeight(.semibold)
+                    .foregroundColor(GreensheetTheme.label)
+                    .padding(.top, GreensheetTheme.spacingLarge)
+                
+                VStack(spacing: 0) {
+                    ForEach(roundTypes, id: \.self) { type in
+                        Button(action: {
+                            roundType = type
+                            dismiss()
+                        }) {
+                            HStack {
+                                Text(type)
+                                    .font(GreensheetTheme.bodyFont)
+                                    .foregroundColor(GreensheetTheme.label)
+                                
+                                Spacer()
+                                
+                                if roundType == type {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(GreensheetTheme.primaryGreen)
+                                }
+                            }
+                            .padding()
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        if type != roundTypes.last {
+                            Divider()
+                                .background(GreensheetTheme.separator)
+                        }
+                    }
+                }
+                .background(GreensheetTheme.backgroundSecondary)
+                .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+                .padding(.horizontal, GreensheetTheme.spacingLarge)
                 
                 Spacer()
             }
-            .padding()
-            .navigationTitle("Add Player")
+            .background(GreensheetTheme.backgroundPrimary)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") { dismiss() }
-                }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Add") {
-                        let handicap = Double(playerHandicap)
-                        let newPlayer = PlayerModel(name: playerName, handicap: handicap)
-                        players.append(newPlayer)
+                    Button("Cancel") {
                         dismiss()
                     }
-                    .disabled(playerName.isEmpty)
+                    .foregroundColor(GreensheetTheme.primaryGreen)
+                }
+            }
+        }
+    }
+}
+
+struct AddPlayerSheet: View {
+    @Binding var players: [PlayerSetupModel]
+    @Environment(\.dismiss) private var dismiss
+    @State private var selectedPlayers: Set<UUID> = []
+    
+    var body: some View {
+        NavigationView {
+            VStack(spacing: GreensheetTheme.spacingLarge) {
+                Text("Add Players")
+                    .font(GreensheetTheme.headlineFont)
+                    .fontWeight(.semibold)
+                    .foregroundColor(GreensheetTheme.label)
+                    .padding(.top, GreensheetTheme.spacingLarge)
+                
+                VStack(spacing: 0) {
+                    ForEach(PlayerSetupModel.samplePlayers, id: \.id) { player in
+                        Button(action: {
+                            if selectedPlayers.contains(player.id) {
+                                selectedPlayers.remove(player.id)
+                            } else {
+                                selectedPlayers.insert(player.id)
+                            }
+                        }) {
+                            HStack(spacing: GreensheetTheme.spacingMedium) {
+                                VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
+                                    Text(player.name)
+                                        .font(GreensheetTheme.bodyFont)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(GreensheetTheme.label)
+                                    
+                                    Text("Handicap: \(player.handicap, specifier: "%.1f")")
+                                        .font(GreensheetTheme.captionFont)
+                                        .foregroundColor(GreensheetTheme.secondaryLabel)
+                                }
+                                
+                                Spacer()
+                                
+                                if selectedPlayers.contains(player.id) {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundColor(GreensheetTheme.primaryGreen)
+                                }
+                            }
+                            .padding()
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        if player.id != PlayerSetupModel.samplePlayers.last?.id {
+                            Divider()
+                                .background(GreensheetTheme.separator)
+                        }
+                    }
+                }
+                .background(GreensheetTheme.backgroundSecondary)
+                .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+                .padding(.horizontal, GreensheetTheme.spacingLarge)
+                
+                Spacer()
+                
+                Button("Add Selected Players") {
+                    let newPlayers = PlayerSetupModel.samplePlayers.filter { selectedPlayers.contains($0.id) }
+                    players.append(contentsOf: newPlayers)
+                    dismiss()
+                }
+                .buttonStyle(GreensheetTheme.primaryButtonStyle)
+                .padding(.horizontal, GreensheetTheme.spacingLarge)
+            }
+            .background(GreensheetTheme.backgroundPrimary)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                    .foregroundColor(GreensheetTheme.primaryGreen)
                 }
             }
         }

@@ -43,15 +43,15 @@ struct ContentView: View {
                 case .roundSummary:
                     RoundSummaryScreen()
                 case .handicapDashboard:
-                    HandicapDashboardScreen()
+                    HandicapDashboardView()
                 case .roundHistory:
-                    RoundHistoryScreen()
+                    RoundHistoryView()
                 case .roundDetails:
-                    RoundDetailsScreen()
+                    RoundDetailsView()
                 case .holeByHole:
-                    HoleByHoleScreen()
+                    HoleByHoleView()
                 case .courseManagement:
-                    CourseManagementScreen()
+                    CourseManagementView()
                 }
             }
         }
