@@ -974,8 +974,7 @@ struct RoundDetailsView: View {
                                     title: "FRONT",
                                     holes: Array(1...9),
                                     par: [4, 5, 4, 3, 4, 3, 4, 5, 4],
-                                    score: [4, 6, 3, 3, 6, 3, 4, 6, 2],
-                                    vsPar: ["E", "+1", "-1", "E", "+2", "E", "E", "+1", "-2"]
+                                    score: [4, 6, 3, 3, 6, 3, 4, 6, 2]
                                 )
                                 
                                 Divider()
@@ -987,8 +986,7 @@ struct RoundDetailsView: View {
                                     title: "BACK",
                                     holes: Array(10...18),
                                     par: [4, 4, 3, 5, 4, 5, 3, 4, 4],
-                                    score: [4, 5, 3, 6, 4, 4, 3, 4, 5],
-                                    vsPar: ["E", "+1", "E", "+1", "E", "-1", "E", "E", "+1"]
+                                    score: [4, 5, 3, 6, 4, 4, 3, 4, 5]
                                 )
                                 
                                 Divider()
@@ -1096,83 +1094,86 @@ struct ScorecardSection: View {
     let holes: [Int]
     let par: [Int]
     let score: [Int]
-    let vsPar: [String]
     
     var body: some View {
         VStack(spacing: 0) {
             // Header Row
             HStack {
                 Text(title)
-                    .font(GreensheetTheme.captionFont)
+                    .font(GreensheetTheme.smallFont)
                     .fontWeight(.semibold)
                     .foregroundColor(GreensheetTheme.secondaryLabel)
-                    .frame(width: 60, alignment: .leading)
+                    .frame(width: 50, alignment: .leading)
                 
                 ForEach(holes, id: \.self) { hole in
                     Text("\(hole)")
-                        .font(GreensheetTheme.captionFont)
+                        .font(GreensheetTheme.smallFont)
                         .fontWeight(.semibold)
                         .foregroundColor(GreensheetTheme.secondaryLabel)
                         .frame(maxWidth: .infinity)
                 }
             }
-            .padding()
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
             .background(GreensheetTheme.backgroundTertiary)
             
             // Par Row
             HStack {
                 Text("Par")
-                    .font(GreensheetTheme.bodyFont)
+                    .font(GreensheetTheme.smallFont)
                     .fontWeight(.medium)
                     .foregroundColor(GreensheetTheme.label)
-                    .frame(width: 60, alignment: .leading)
+                    .frame(width: 50, alignment: .leading)
                 
                 ForEach(Array(par.enumerated()), id: \.offset) { index, parValue in
                     Text("\(parValue)")
-                        .font(GreensheetTheme.bodyFont)
+                        .font(GreensheetTheme.smallFont)
                         .foregroundColor(GreensheetTheme.secondaryLabel)
                         .frame(maxWidth: .infinity)
                 }
             }
-            .padding()
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
             .background(GreensheetTheme.backgroundSecondary)
             
             // Score Row
             HStack {
                 Text("Score")
-                    .font(GreensheetTheme.bodyFont)
+                    .font(GreensheetTheme.smallFont)
                     .fontWeight(.medium)
                     .foregroundColor(GreensheetTheme.label)
-                    .frame(width: 60, alignment: .leading)
+                    .frame(width: 50, alignment: .leading)
                 
                 ForEach(Array(score.enumerated()), id: \.offset) { index, scoreValue in
-                    Text("\(scoreValue)")
-                        .font(GreensheetTheme.bodyFont)
-                        .fontWeight(.semibold)
-                        .foregroundColor(scoreColor(score: scoreValue, par: par[index]))
-                        .frame(maxWidth: .infinity)
+                    ScoreDisplay(
+                        score: scoreValue,
+                        par: par[index],
+                        strokeStyle: strokeStyle(for: scoreValue, par: par[index])
+                    )
+                    .frame(maxWidth: .infinity)
                 }
             }
-            .padding()
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
             .background(GreensheetTheme.backgroundPrimary)
-            
-            // +/- Row
-            HStack {
-                Text("+/-")
-                    .font(GreensheetTheme.bodyFont)
-                    .fontWeight(.medium)
-                    .foregroundColor(GreensheetTheme.label)
-                    .frame(width: 60, alignment: .leading)
-                
-                ForEach(Array(vsPar.enumerated()), id: \.offset) { index, vsParValue in
-                    Text(vsParValue)
-                        .font(GreensheetTheme.bodyFont)
-                        .foregroundColor(vsParColor(vsPar: vsParValue))
-                        .frame(maxWidth: .infinity)
-                }
-            }
-            .padding()
-            .background(GreensheetTheme.backgroundSecondary)
+        }
+    }
+    
+    private func strokeStyle(for score: Int, par: Int) -> StrokeStyle {
+        let difference = score - par
+        switch difference {
+        case ..<(-1): // Eagle or better
+            return .circle
+        case -1: // Birdie
+            return .singleSquare
+        case 0: // Par
+            return .none
+        case 1: // Bogey
+            return .singleSquare
+        case 2: // Double bogey
+            return .doubleSquare
+        default: // Triple or worse
+            return .doubleSquare
         }
     }
     
@@ -1186,137 +1187,80 @@ struct ScorecardSection: View {
         default: return .purple // Triple or worse
         }
     }
-    
-    private func vsParColor(vsPar: String) -> Color {
-        switch vsPar {
-        case "E": return GreensheetTheme.primaryGreen
-        case let str where str.hasPrefix("-"): return GreensheetTheme.birdie
-        case let str where str.hasPrefix("+"): return GreensheetTheme.bogey
-        default: return GreensheetTheme.secondaryLabel
-        }
-    }
 }
 
-struct HoleByHoleView: View {
-    @EnvironmentObject var appState: AppState
+enum StrokeStyle {
+    case none
+    case singleSquare
+    case doubleSquare
+    case circle
+}
+
+struct ScoreDisplay: View {
+    let score: Int
+    let par: Int
+    let strokeStyle: StrokeStyle
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
-                // Header
-                HStack {
-                    Button(action: {
-                        appState.currentScreen = .roundDetails
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .font(.title2)
-                            .foregroundColor(GreensheetTheme.label)
-                    }
-                    
-                    Spacer()
-                    
-                    Text("Hole by Hole")
-                        .font(GreensheetTheme.headlineFont)
-                        .foregroundColor(GreensheetTheme.label)
-                    
-                    Spacer()
-                }
-                .padding(.horizontal, GreensheetTheme.spacingLarge)
-                .padding(.vertical, GreensheetTheme.spacingMedium)
-                
-                ScrollView {
-                    VStack(spacing: GreensheetTheme.spacingLarge) {
-                        // Round Header
-                        VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
-                            Text("Monday, Jul 21, 7:49AM")
-                                .font(GreensheetTheme.headlineFont)
-                                .fontWeight(.semibold)
-                                .foregroundColor(GreensheetTheme.label)
-                            Text("18 Holes • Green Briar Golf Course")
-                                .font(GreensheetTheme.bodyFont)
-                                .foregroundColor(GreensheetTheme.secondaryLabel)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, GreensheetTheme.spacingLarge)
-                        
-                        // Hole Stats Table
-                        VStack(spacing: 0) {
-                            // Table Header
-                            HStack {
-                                Text("Hole")
-                                    .font(GreensheetTheme.captionFont)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(GreensheetTheme.secondaryLabel)
-                                    .frame(width: 60, alignment: .leading)
-                                
-                                Text("Strokes")
-                                    .font(GreensheetTheme.captionFont)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(GreensheetTheme.secondaryLabel)
-                                    .frame(maxWidth: .infinity)
-                                
-                                Text("Fairways")
-                                    .font(GreensheetTheme.captionFont)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(GreensheetTheme.secondaryLabel)
-                                    .frame(maxWidth: .infinity)
-                                
-                                Text("Putts")
-                                    .font(GreensheetTheme.captionFont)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(GreensheetTheme.secondaryLabel)
-                                    .frame(maxWidth: .infinity)
-                            }
-                            .padding()
-                            .background(GreensheetTheme.backgroundTertiary)
-                            
-                            // Table Rows
-                            ForEach(1...18, id: \.self) { hole in
-                                HStack {
-                                    Text("\(hole)")
-                                        .font(GreensheetTheme.bodyFont)
-                                        .fontWeight(.medium)
-                                        .foregroundColor(GreensheetTheme.label)
-                                        .frame(width: 60, alignment: .leading)
-                                    
-                                    Text("\(hole <= 9 ? 4 : 5)")
-                                        .font(GreensheetTheme.bodyFont)
-                                        .foregroundColor(GreensheetTheme.primaryGreen)
-                                        .frame(maxWidth: .infinity)
-                                    
-                                    Text("-")
-                                        .font(GreensheetTheme.bodyFont)
-                                        .foregroundColor(GreensheetTheme.secondaryLabel)
-                                        .frame(maxWidth: .infinity)
-                                    
-                                    Text("\(hole % 2 == 0 ? 1 : 2)")
-                                        .font(GreensheetTheme.bodyFont)
-                                        .foregroundColor(GreensheetTheme.birdie)
-                                        .frame(maxWidth: .infinity)
-                                }
-                                .padding()
-                                .background(hole % 2 == 0 ? GreensheetTheme.backgroundSecondary : GreensheetTheme.backgroundPrimary)
-                                
-                                if hole < 18 {
-                                    Divider()
-                                        .background(GreensheetTheme.separator)
-                                        .padding(.leading, GreensheetTheme.spacingLarge)
-                                }
-                            }
-                        }
-                        .background(GreensheetTheme.backgroundSecondary)
-                        .cornerRadius(GreensheetTheme.cornerRadiusMedium)
-                        .padding(.horizontal, GreensheetTheme.spacingLarge)
-                    }
-                    .padding(.vertical, GreensheetTheme.spacingLarge)
-                }
+        Group {
+            switch strokeStyle {
+            case .none:
+                Text("\(score)")
+                    .font(GreensheetTheme.smallFont)
+                    .fontWeight(.semibold)
+                    .foregroundColor(scoreColor)
+            case .singleSquare:
+                Text("\(score)")
+                    .font(GreensheetTheme.smallFont)
+                    .fontWeight(.semibold)
+                    .foregroundColor(scoreColor)
+                    .frame(width: 20, height: 20)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 1)
+                            .stroke(Color.gray, lineWidth: 1)
+                    )
+            case .doubleSquare:
+                Text("\(score)")
+                    .font(GreensheetTheme.smallFont)
+                    .fontWeight(.semibold)
+                    .foregroundColor(scoreColor)
+                    .frame(width: 20, height: 20)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 1)
+                            .stroke(Color.gray, lineWidth: 1)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 1)
+                            .stroke(Color.gray, lineWidth: 1)
+                            .padding(2)
+                    )
+            case .circle:
+                Text("\(score)")
+                    .font(GreensheetTheme.smallFont)
+                    .fontWeight(.semibold)
+                    .foregroundColor(scoreColor)
+                    .frame(width: 20, height: 20)
+                    .overlay(
+                        Circle()
+                            .stroke(Color.gray, lineWidth: 1)
+                    )
             }
-            .background(GreensheetTheme.backgroundPrimary)
         }
     }
+    
+    private var scoreColor: Color {
+        let difference = score - par
+        switch difference {
+        case ..<0: return GreensheetTheme.birdie // Birdie or better
+        case 0: return GreensheetTheme.primaryGreen // Par
+        case 1: return GreensheetTheme.bogey // Bogey
+        case 2: return .red // Double bogey
+        default: return .purple // Triple or worse
+        }
+    }
+    
+    #Preview {
+        HomeDashboardScreen()
+            .environmentObject(AppState())
+    }
 }
-
-#Preview {
-    HomeDashboardScreen()
-        .environmentObject(AppState())
-} 
