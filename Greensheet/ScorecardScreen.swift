@@ -21,15 +21,18 @@ struct ScorecardScreen: View {
             VStack(spacing: 0) {
                 // Header
                 HStack {
-                    Button("←") {
+                    Button(action: {
                         appState.currentScreen = .preRoundSetup
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .font(.title2)
+                            .foregroundColor(GreensheetTheme.label)
                     }
-                    .font(.title2)
-                    .foregroundColor(GreensheetTheme.primaryGreen)
+                    
+                    Spacer()
                     
                     Text("Score")
-                        .font(GreensheetTheme.titleFont)
-                        .fontWeight(.bold)
+                        .font(GreensheetTheme.headlineFont)
                         .foregroundColor(GreensheetTheme.label)
                     
                     Spacer()
@@ -42,7 +45,7 @@ struct ScorecardScreen: View {
                     .foregroundColor(GreensheetTheme.primaryGreen)
                 }
                 .padding(.horizontal, GreensheetTheme.spacingLarge)
-                .padding(.top, GreensheetTheme.spacingLarge)
+                .padding(.vertical, GreensheetTheme.spacingMedium)
                 
                 ScrollView {
                     VStack(spacing: GreensheetTheme.spacingLarge) {

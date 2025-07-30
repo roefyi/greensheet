@@ -70,11 +70,10 @@ struct CourseSelectionScreen: View {
                         if course.id != filteredCourses.last?.id {
                             Divider()
                                 .padding(.leading, GreensheetTheme.spacingLarge)
+                                .padding(.vertical, GreensheetTheme.spacingSmall)
                         }
                     }
                 }
-                .background(GreensheetTheme.backgroundSecondary)
-                .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                 .padding(.horizontal, GreensheetTheme.spacingLarge)
             }
             
@@ -129,7 +128,7 @@ struct CourseSelectionRow: View {
             }
             .padding()
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(CourseCardButtonStyle())
     }
     
     private func formatLastPlayed(_ date: Date?) -> String {

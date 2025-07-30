@@ -97,13 +97,13 @@ struct HomeDashboardScreen: View {
                                             .foregroundColor(GreensheetTheme.bogey)
                                     }
                                     .padding()
-                                    .background(GreensheetTheme.backgroundSecondary)
                                 }
-                                .buttonStyle(PlainButtonStyle())
+                                .buttonStyle(CourseCardButtonStyle())
                                 
                                 Divider()
                                     .background(GreensheetTheme.separator)
                                     .padding(.leading, GreensheetTheme.spacingLarge)
+                                    .padding(.vertical, GreensheetTheme.spacingSmall)
                                 
                                 // Spyglass Hill
                                 Button(action: {
@@ -126,12 +126,9 @@ struct HomeDashboardScreen: View {
                                             .foregroundColor(GreensheetTheme.bogey)
                                     }
                                     .padding()
-                                    .background(GreensheetTheme.backgroundSecondary)
                                 }
-                                .buttonStyle(PlainButtonStyle())
+                                .buttonStyle(CourseCardButtonStyle())
                             }
-                            .background(GreensheetTheme.backgroundSecondary)
-                            .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                             .padding(.horizontal, GreensheetTheme.spacingLarge)
                         }
                         
@@ -239,6 +236,19 @@ struct TabButton: View {
     }
 }
 
+// Custom button style for course cards with press highlighting
+struct CourseCardButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(
+                RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusMedium)
+                    .fill(configuration.isPressed ? GreensheetTheme.backgroundSecondary : Color.clear)
+            )
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
+
 // MARK: - Round History View (matching HTML)
 struct RoundHistoryView: View {
     @EnvironmentObject var appState: AppState
@@ -306,13 +316,13 @@ struct RoundHistoryView: View {
                                 }
                             }
                             .padding()
-                            .background(GreensheetTheme.backgroundSecondary)
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(CourseCardButtonStyle())
                         
                         Divider()
                             .background(GreensheetTheme.separator)
                             .padding(.leading, GreensheetTheme.spacingLarge)
+                            .padding(.vertical, GreensheetTheme.spacingSmall)
                         
                         // Round 2
                         Button(action: {
@@ -340,13 +350,13 @@ struct RoundHistoryView: View {
                                 }
                             }
                             .padding()
-                            .background(GreensheetTheme.backgroundSecondary)
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(CourseCardButtonStyle())
                         
                         Divider()
                             .background(GreensheetTheme.separator)
                             .padding(.leading, GreensheetTheme.spacingLarge)
+                            .padding(.vertical, GreensheetTheme.spacingSmall)
                         
                         // Round 3
                         Button(action: {
@@ -374,12 +384,9 @@ struct RoundHistoryView: View {
                                 }
                             }
                             .padding()
-                            .background(GreensheetTheme.backgroundSecondary)
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(CourseCardButtonStyle())
                     }
-                    .background(GreensheetTheme.backgroundSecondary)
-                    .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                     .padding(.horizontal, GreensheetTheme.spacingLarge)
                     .padding(.top, GreensheetTheme.spacingMedium)
                 }
@@ -657,13 +664,13 @@ struct CourseManagementView: View {
                                 }
                             }
                             .padding()
-                            .background(GreensheetTheme.backgroundSecondary)
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(CourseCardButtonStyle())
                         
                         Divider()
                             .background(GreensheetTheme.separator)
                             .padding(.leading, GreensheetTheme.spacingLarge)
+                            .padding(.vertical, GreensheetTheme.spacingSmall)
                         
                         // Course 2
                         Button(action: {
@@ -698,12 +705,9 @@ struct CourseManagementView: View {
                                 }
                             }
                             .padding()
-                            .background(GreensheetTheme.backgroundSecondary)
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(CourseCardButtonStyle())
                     }
-                    .background(GreensheetTheme.backgroundSecondary)
-                    .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                     .padding(.horizontal, GreensheetTheme.spacingLarge)
                     .padding(.top, GreensheetTheme.spacingLarge)
                 }
@@ -760,15 +764,18 @@ struct RoundDetailsView: View {
             VStack(spacing: 0) {
                 // Header
                 HStack {
-                    Button("←") {
+                    Button(action: {
                         appState.currentScreen = .roundHistory
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .font(.title2)
+                            .foregroundColor(GreensheetTheme.label)
                     }
-                    .font(.title2)
-                    .foregroundColor(GreensheetTheme.primaryGreen)
+                    
+                    Spacer()
                     
                     Text("Round Details")
-                        .font(GreensheetTheme.titleFont)
-                        .fontWeight(.bold)
+                        .font(GreensheetTheme.headlineFont)
                         .foregroundColor(GreensheetTheme.label)
                     
                     Spacer()
@@ -781,12 +788,12 @@ struct RoundDetailsView: View {
                     .foregroundColor(GreensheetTheme.primaryGreen)
                 }
                 .padding(.horizontal, GreensheetTheme.spacingLarge)
-                .padding(.top, GreensheetTheme.spacingLarge)
+                .padding(.vertical, GreensheetTheme.spacingMedium)
                 
                 ScrollView {
                     VStack(spacing: GreensheetTheme.spacingLarge) {
                         // Round Header
-                        VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
+                        VStack(spacing: GreensheetTheme.spacingSmall) {
                             Text("Pebble Beach Golf Links")
                                 .font(GreensheetTheme.headlineFont)
                                 .fontWeight(.semibold)
@@ -798,7 +805,7 @@ struct RoundDetailsView: View {
                                 .font(GreensheetTheme.bodyFont)
                                 .foregroundColor(GreensheetTheme.secondaryLabel)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.horizontal, GreensheetTheme.spacingLarge)
                         
                         // Round Stats
@@ -840,9 +847,9 @@ struct RoundDetailsView: View {
                                                 .foregroundColor(.white)
                                         )
                                     
-                                    VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
+                                    VStack(alignment: .leading, spacing: GreensheetTheme.spacingXSmall) {
                                         Text("FAIRWAYS")
-                                            .font(GreensheetTheme.smallFont)
+                                            .font(GreensheetTheme.captionFont)
                                             .fontWeight(.semibold)
                                             .foregroundColor(GreensheetTheme.secondaryLabel)
                                         Text("10 • From 14")
@@ -853,21 +860,21 @@ struct RoundDetailsView: View {
                                     Spacer()
                                     
                                     Text("10")
-                                        .font(GreensheetTheme.bodyFont)
+                                        .font(.custom("HostGrotesk-Regular", size: 28))
                                         .fontWeight(.semibold)
-                                        .foregroundColor(GreensheetTheme.primaryGreen)
+                                        .foregroundColor(GreensheetTheme.label)
                                 }
                                 .padding()
-                                .background(GreensheetTheme.backgroundSecondary)
                                 
                                 Divider()
                                     .background(GreensheetTheme.separator)
                                     .padding(.leading, GreensheetTheme.spacingLarge)
+                                    .padding(.vertical, GreensheetTheme.spacingSmall)
                                 
                                 // Putts
                                 HStack {
                                     Circle()
-                                        .fill(GreensheetTheme.birdie)
+                                        .fill(GreensheetTheme.primaryGreen)
                                         .frame(width: 40, height: 40)
                                         .overlay(
                                             Text("P")
@@ -876,9 +883,9 @@ struct RoundDetailsView: View {
                                                 .foregroundColor(.white)
                                         )
                                     
-                                    VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
+                                    VStack(alignment: .leading, spacing: GreensheetTheme.spacingXSmall) {
                                         Text("PUTTS / HOLE")
-                                            .font(GreensheetTheme.smallFont)
+                                            .font(GreensheetTheme.captionFont)
                                             .fontWeight(.semibold)
                                             .foregroundColor(GreensheetTheme.secondaryLabel)
                                         Text("+1.8 • From 18")
@@ -889,16 +896,16 @@ struct RoundDetailsView: View {
                                     Spacer()
                                     
                                     Text("+1.8")
-                                        .font(GreensheetTheme.bodyFont)
+                                        .font(.custom("HostGrotesk-Regular", size: 28))
                                         .fontWeight(.semibold)
-                                        .foregroundColor(GreensheetTheme.birdie)
+                                        .foregroundColor(GreensheetTheme.label)
                                 }
                                 .padding()
-                                .background(GreensheetTheme.backgroundSecondary)
                                 
                                 Divider()
                                     .background(GreensheetTheme.separator)
                                     .padding(.leading, GreensheetTheme.spacingLarge)
+                                    .padding(.vertical, GreensheetTheme.spacingSmall)
                                 
                                 // GIR
                                 HStack {
@@ -912,9 +919,9 @@ struct RoundDetailsView: View {
                                                 .foregroundColor(.white)
                                         )
                                     
-                                    VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
+                                    VStack(alignment: .leading, spacing: GreensheetTheme.spacingXSmall) {
                                         Text("GIR")
-                                            .font(GreensheetTheme.smallFont)
+                                            .font(GreensheetTheme.captionFont)
                                             .fontWeight(.semibold)
                                             .foregroundColor(GreensheetTheme.secondaryLabel)
                                         Text("8 • From 18")
@@ -925,6 +932,82 @@ struct RoundDetailsView: View {
                                     Spacer()
                                     
                                     Text("8")
+                                        .font(.custom("HostGrotesk-Regular", size: 28))
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(GreensheetTheme.label)
+                                }
+                                .padding()
+                            }
+                            .padding(.horizontal, GreensheetTheme.spacingLarge)
+                        }
+                        
+                        // Scoring Breakdown
+                        VStack(alignment: .leading, spacing: GreensheetTheme.spacingMedium) {
+                            Text("Scoring Breakdown")
+                                .font(GreensheetTheme.headlineFont)
+                                .fontWeight(.semibold)
+                                .foregroundColor(GreensheetTheme.label)
+                                .padding(.horizontal, GreensheetTheme.spacingLarge)
+                            
+                            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: GreensheetTheme.spacingMedium) {
+                                ScoringStatCard(value: "1", label: "Eagles", color: .orange)
+                                ScoringStatCard(value: "2", label: "Birdies", color: GreensheetTheme.birdie)
+                                ScoringStatCard(value: "12", label: "Pars", color: GreensheetTheme.primaryGreen)
+                                ScoringStatCard(value: "4", label: "Bogeys", color: GreensheetTheme.bogey)
+                                ScoringStatCard(value: "0", label: "Double", color: .red)
+                                ScoringStatCard(value: "0", label: "Trpl+", color: .purple)
+                            }
+                            .padding(.horizontal, GreensheetTheme.spacingLarge)
+                        }
+                        
+                        // Scorecard Grid
+                        VStack(alignment: .leading, spacing: GreensheetTheme.spacingMedium) {
+                            Text("Scorecard")
+                                .font(GreensheetTheme.headlineFont)
+                                .fontWeight(.semibold)
+                                .foregroundColor(GreensheetTheme.label)
+                                .padding(.horizontal, GreensheetTheme.spacingLarge)
+                            
+                            VStack(spacing: 0) {
+                                // Front Nine Header
+                                ScorecardSection(
+                                    title: "FRONT",
+                                    holes: Array(1...9),
+                                    par: [4, 5, 4, 3, 4, 3, 4, 5, 4],
+                                    score: [4, 6, 3, 3, 6, 3, 4, 6, 2],
+                                    vsPar: ["E", "+1", "-1", "E", "+2", "E", "E", "+1", "-2"]
+                                )
+                                
+                                Divider()
+                                    .background(GreensheetTheme.separator)
+                                    .padding(.horizontal, GreensheetTheme.spacingLarge)
+                                
+                                // Back Nine Header
+                                ScorecardSection(
+                                    title: "BACK",
+                                    holes: Array(10...18),
+                                    par: [4, 4, 3, 5, 4, 5, 3, 4, 4],
+                                    score: [4, 5, 3, 6, 4, 4, 3, 4, 5],
+                                    vsPar: ["E", "+1", "E", "+1", "E", "-1", "E", "E", "+1"]
+                                )
+                                
+                                Divider()
+                                    .background(GreensheetTheme.separator)
+                                    .padding(.horizontal, GreensheetTheme.spacingLarge)
+                                
+                                // Total Row
+                                HStack {
+                                    Text("Total")
+                                        .font(GreensheetTheme.bodyFont)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(GreensheetTheme.label)
+                                        .frame(width: 60, alignment: .leading)
+                                    
+                                    ForEach(0..<9, id: \.self) { _ in
+                                        Spacer()
+                                    }
+                                    
+                                    Text("72(+2)")
                                         .font(GreensheetTheme.bodyFont)
                                         .fontWeight(.semibold)
                                         .foregroundColor(GreensheetTheme.primaryGreen)
@@ -936,11 +1019,180 @@ struct RoundDetailsView: View {
                             .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                             .padding(.horizontal, GreensheetTheme.spacingLarge)
                         }
+                        
+                        // Round Notes
+                        VStack(alignment: .leading, spacing: GreensheetTheme.spacingMedium) {
+                            Text("Notes")
+                                .font(GreensheetTheme.headlineFont)
+                                .fontWeight(.semibold)
+                                .foregroundColor(GreensheetTheme.label)
+                                .padding(.horizontal, GreensheetTheme.spacingLarge)
+                            
+                            Text("Great round! Putted really well on the back 9.")
+                                .font(GreensheetTheme.bodyFont)
+                                .foregroundColor(GreensheetTheme.secondaryLabel)
+                                .padding(.horizontal, GreensheetTheme.spacingLarge)
+                        }
+                        
+                        // Round Actions
+                        HStack(spacing: GreensheetTheme.spacingMedium) {
+                            Button("Edit") {
+                                // Edit round
+                            }
+                            .font(GreensheetTheme.bodyFont)
+                            .fontWeight(.medium)
+                            .foregroundColor(GreensheetTheme.secondaryLabel)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(GreensheetTheme.backgroundSecondary)
+                            .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+                            
+                            Button("Delete") {
+                                // Delete round
+                            }
+                            .font(GreensheetTheme.bodyFont)
+                            .fontWeight(.medium)
+                            .foregroundColor(.red)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(GreensheetTheme.backgroundSecondary)
+                            .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+                        }
+                        .padding(.horizontal, GreensheetTheme.spacingLarge)
                     }
                     .padding(.vertical, GreensheetTheme.spacingLarge)
                 }
             }
             .background(GreensheetTheme.backgroundPrimary)
+        }
+    }
+}
+
+// Helper Views for Round Details
+struct ScoringStatCard: View {
+    let value: String
+    let label: String
+    let color: Color
+    
+    var body: some View {
+        VStack(spacing: GreensheetTheme.spacingSmall) {
+            Text(value)
+                .font(.custom("HostGrotesk-Regular", size: 32))
+                .fontWeight(.bold)
+                .foregroundColor(GreensheetTheme.primaryGreen)
+            Text(label)
+                .font(GreensheetTheme.captionFont)
+                .foregroundColor(GreensheetTheme.primaryGreen)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(GreensheetTheme.primaryGreen.opacity(0.1))
+        .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+    }
+}
+
+struct ScorecardSection: View {
+    let title: String
+    let holes: [Int]
+    let par: [Int]
+    let score: [Int]
+    let vsPar: [String]
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            // Header Row
+            HStack {
+                Text(title)
+                    .font(GreensheetTheme.captionFont)
+                    .fontWeight(.semibold)
+                    .foregroundColor(GreensheetTheme.secondaryLabel)
+                    .frame(width: 60, alignment: .leading)
+                
+                ForEach(holes, id: \.self) { hole in
+                    Text("\(hole)")
+                        .font(GreensheetTheme.captionFont)
+                        .fontWeight(.semibold)
+                        .foregroundColor(GreensheetTheme.secondaryLabel)
+                        .frame(maxWidth: .infinity)
+                }
+            }
+            .padding()
+            .background(GreensheetTheme.backgroundTertiary)
+            
+            // Par Row
+            HStack {
+                Text("Par")
+                    .font(GreensheetTheme.bodyFont)
+                    .fontWeight(.medium)
+                    .foregroundColor(GreensheetTheme.label)
+                    .frame(width: 60, alignment: .leading)
+                
+                ForEach(Array(par.enumerated()), id: \.offset) { index, parValue in
+                    Text("\(parValue)")
+                        .font(GreensheetTheme.bodyFont)
+                        .foregroundColor(GreensheetTheme.secondaryLabel)
+                        .frame(maxWidth: .infinity)
+                }
+            }
+            .padding()
+            .background(GreensheetTheme.backgroundSecondary)
+            
+            // Score Row
+            HStack {
+                Text("Score")
+                    .font(GreensheetTheme.bodyFont)
+                    .fontWeight(.medium)
+                    .foregroundColor(GreensheetTheme.label)
+                    .frame(width: 60, alignment: .leading)
+                
+                ForEach(Array(score.enumerated()), id: \.offset) { index, scoreValue in
+                    Text("\(scoreValue)")
+                        .font(GreensheetTheme.bodyFont)
+                        .fontWeight(.semibold)
+                        .foregroundColor(scoreColor(score: scoreValue, par: par[index]))
+                        .frame(maxWidth: .infinity)
+                }
+            }
+            .padding()
+            .background(GreensheetTheme.backgroundPrimary)
+            
+            // +/- Row
+            HStack {
+                Text("+/-")
+                    .font(GreensheetTheme.bodyFont)
+                    .fontWeight(.medium)
+                    .foregroundColor(GreensheetTheme.label)
+                    .frame(width: 60, alignment: .leading)
+                
+                ForEach(Array(vsPar.enumerated()), id: \.offset) { index, vsParValue in
+                    Text(vsParValue)
+                        .font(GreensheetTheme.bodyFont)
+                        .foregroundColor(vsParColor(vsPar: vsParValue))
+                        .frame(maxWidth: .infinity)
+                }
+            }
+            .padding()
+            .background(GreensheetTheme.backgroundSecondary)
+        }
+    }
+    
+    private func scoreColor(score: Int, par: Int) -> Color {
+        let difference = score - par
+        switch difference {
+        case ..<0: return GreensheetTheme.birdie // Birdie or better
+        case 0: return GreensheetTheme.primaryGreen // Par
+        case 1: return GreensheetTheme.bogey // Bogey
+        case 2: return .red // Double bogey
+        default: return .purple // Triple or worse
+        }
+    }
+    
+    private func vsParColor(vsPar: String) -> Color {
+        switch vsPar {
+        case "E": return GreensheetTheme.primaryGreen
+        case let str where str.hasPrefix("-"): return GreensheetTheme.birdie
+        case let str where str.hasPrefix("+"): return GreensheetTheme.bogey
+        default: return GreensheetTheme.secondaryLabel
         }
     }
 }
@@ -953,21 +1205,24 @@ struct HoleByHoleView: View {
             VStack(spacing: 0) {
                 // Header
                 HStack {
-                    Button("←") {
+                    Button(action: {
                         appState.currentScreen = .roundDetails
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .font(.title2)
+                            .foregroundColor(GreensheetTheme.label)
                     }
-                    .font(.title2)
-                    .foregroundColor(GreensheetTheme.primaryGreen)
+                    
+                    Spacer()
                     
                     Text("Hole by Hole")
-                        .font(GreensheetTheme.titleFont)
-                        .fontWeight(.bold)
+                        .font(GreensheetTheme.headlineFont)
                         .foregroundColor(GreensheetTheme.label)
                     
                     Spacer()
                 }
                 .padding(.horizontal, GreensheetTheme.spacingLarge)
-                .padding(.top, GreensheetTheme.spacingLarge)
+                .padding(.vertical, GreensheetTheme.spacingMedium)
                 
                 ScrollView {
                     VStack(spacing: GreensheetTheme.spacingLarge) {

@@ -23,6 +23,25 @@ struct PreRoundSetupScreen: View {
     @State private var temperature = "72°F"
     @State private var windSpeed = "8 mph"
     
+    private func teeColor(for tee: String) -> Color {
+        switch tee.lowercased() {
+        case "championship", "black":
+            return .black
+        case "blue":
+            return .blue
+        case "white":
+            return .white
+        case "gold", "yellow":
+            return .yellow
+        case "red":
+            return .red
+        case "green":
+            return .green
+        default:
+            return .gray
+        }
+    }
+    
     var body: some View {
         VStack(spacing: GreensheetTheme.spacingLarge) {
             // Header
@@ -46,10 +65,6 @@ struct PreRoundSetupScreen: View {
                             .font(GreensheetTheme.captionFont)
                             .foregroundColor(GreensheetTheme.secondaryLabel)
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(GreensheetTheme.backgroundSecondary)
-                    .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                     .padding(.horizontal, GreensheetTheme.spacingLarge)
                     
                     // Holes & Tees
@@ -65,8 +80,12 @@ struct PreRoundSetupScreen: View {
                             Button(action: { showingTeeSelector = true }) {
                                 HStack(spacing: GreensheetTheme.spacingSmall) {
                                     Circle()
-                                        .fill(Color(selectedTee.lowercased()))
+                                        .fill(teeColor(for: selectedTee))
                                         .frame(width: 20, height: 20)
+                                        .overlay(
+                                            Circle()
+                                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                        )
                                     Text(selectedTee)
                                         .font(GreensheetTheme.bodyFont)
                                         .foregroundColor(GreensheetTheme.label)
@@ -385,6 +404,25 @@ struct TeeSelectorSheet: View {
     
     private let teeOptions = ["Championship", "Blue", "White", "Gold", "Red"]
     
+    private func teeColor(for tee: String) -> Color {
+        switch tee.lowercased() {
+        case "championship", "black":
+            return .black
+        case "blue":
+            return .blue
+        case "white":
+            return .white
+        case "gold", "yellow":
+            return .yellow
+        case "red":
+            return .red
+        case "green":
+            return .green
+        default:
+            return .gray
+        }
+    }
+    
     var body: some View {
         NavigationView {
             VStack(spacing: GreensheetTheme.spacingLarge) {
@@ -402,8 +440,12 @@ struct TeeSelectorSheet: View {
                         }) {
                             HStack(spacing: GreensheetTheme.spacingMedium) {
                                 Circle()
-                                    .fill(Color(tee.lowercased()))
+                                    .fill(teeColor(for: tee))
                                     .frame(width: 20, height: 20)
+                                    .overlay(
+                                        Circle()
+                                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                                    )
                                 
                                 Text(tee)
                                     .font(GreensheetTheme.bodyFont)

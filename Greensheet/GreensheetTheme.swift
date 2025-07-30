@@ -50,6 +50,7 @@ struct GreensheetTheme {
     static let smallFont = Font.custom("HostGrotesk-Regular", size: 12)
     
     // MARK: - Spacing
+    static let spacingXSmall: CGFloat = 4
     static let spacingSmall: CGFloat = 8
     static let spacingMedium: CGFloat = 16
     static let spacingLarge: CGFloat = 24
