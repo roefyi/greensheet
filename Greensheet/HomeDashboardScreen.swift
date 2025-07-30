@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// Import dependencies for CourseModel and AppState
+
 struct HomeDashboardScreen: View {
     @EnvironmentObject var appState: AppState
     @State private var selectedTab = 0
@@ -42,6 +44,15 @@ struct HomeDashboardScreen: View {
                 .tag(3)
         }
         .accentColor(GreensheetTheme.primaryGreen)
+        .onAppear {
+            // Set tab bar background color to match main view
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor(GreensheetTheme.backgroundPrimary)
+            
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
+        }
     }
 }
 
@@ -61,11 +72,13 @@ struct HomeTabView: View {
                         
                         Spacer()
                         
-                        Button("SETTINGS") {
+                        Button(action: {
                             // Show settings
+                        }) {
+                            Image(systemName: "gearshape.fill")
+                                .font(.title2)
+                                .foregroundColor(GreensheetTheme.primaryGreen)
                         }
-                        .font(GreensheetTheme.captionFont)
-                        .foregroundColor(GreensheetTheme.primaryGreen)
                     }
                     .padding(.horizontal, GreensheetTheme.spacingLarge)
                     
@@ -76,30 +89,24 @@ struct HomeTabView: View {
                             .foregroundColor(GreensheetTheme.secondaryLabel)
                         Text("12.4")
                             .font(.custom("HostGrotesk-Regular", size: 48))
+                            .fontWeight(.bold)
                             .foregroundColor(GreensheetTheme.primaryGreen)
                     }
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(GreensheetTheme.lightGreen.opacity(0.1))
-                    .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                     .padding(.horizontal, GreensheetTheme.spacingLarge)
                     
                     // Play Round Button
                     Button(action: {
                         appState.navigateTo(.courseSelection)
                     }) {
-                        VStack(spacing: GreensheetTheme.spacingSmall) {
-                            Text("START")
-                                .font(GreensheetTheme.captionFont)
-                                .fontWeight(.semibold)
-                            Text("Play a Round")
-                                .font(GreensheetTheme.headlineFont)
-                        }
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(GreensheetTheme.primaryGreen)
-                        .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+                        Text("Play a Round")
+                            .font(GreensheetTheme.headlineFont)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(GreensheetTheme.primaryGreen)
+                            .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                     }
                     .padding(.horizontal, GreensheetTheme.spacingLarge)
                     
@@ -132,6 +139,7 @@ struct RecentCoursesView: View {
                     RecentCourseRow(course: course) {
                         appState.navigateTo(.courseSelection)
                     }
+                    .padding(.vertical, GreensheetTheme.spacingSmall)
                     
                     if course.id != CourseModel.sampleCourses.last?.id {
                         Divider()
@@ -140,8 +148,6 @@ struct RecentCoursesView: View {
                     }
                 }
             }
-            .background(GreensheetTheme.backgroundSecondary)
-            .cornerRadius(GreensheetTheme.cornerRadiusMedium)
             .padding(.horizontal, GreensheetTheme.spacingLarge)
         }
     }
@@ -150,6 +156,7 @@ struct RecentCoursesView: View {
 struct RecentCourseRow: View {
     let course: CourseModel
     let action: () -> Void
+    @State private var isPressed = false
     
     var body: some View {
         Button(action: action) {
@@ -175,8 +182,15 @@ struct RecentCourseRow: View {
                 }
             }
             .padding()
+            .background(isPressed ? GreensheetTheme.backgroundSecondary : Color.clear)
+            .cornerRadius(GreensheetTheme.cornerRadiusSmall)
         }
         .buttonStyle(PlainButtonStyle())
+        .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, pressing: { pressing in
+            withAnimation(.easeInOut(duration: 0.1)) {
+                isPressed = pressing
+            }
+        }, perform: {})
     }
     
     private func formatLastPlayed(_ date: Date?) -> String {
@@ -218,11 +232,11 @@ struct StatCard: View {
             
             Text(label)
                 .font(GreensheetTheme.captionFont)
-                .foregroundColor(GreensheetTheme.secondaryLabel)
+                .foregroundColor(GreensheetTheme.primaryGreen)
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(GreensheetTheme.backgroundSecondary)
+        .background(GreensheetTheme.lightGreen.opacity(0.1))
         .cornerRadius(GreensheetTheme.cornerRadiusMedium)
     }
 }
