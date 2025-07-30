@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23A344" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Course" representedClassName="Course" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" defaultValueString="$(UUID)" usesScalarValueType="NO"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="lastPlayed" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="lastScore" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="location" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="NO" attributeType="String" defaultValueString="New Course"/>
+        <attribute name="par" optional="NO" attributeType="Integer 16" defaultValueString="72" usesScalarValueType="YES"/>
+        <attribute name="timesPlayed" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalYardage" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="holes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Hole" inverseName="course" inverseEntity="Hole"/>
+        <relationship name="rounds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Round" inverseName="course" inverseEntity="Round"/>
+        <relationship name="teeOptions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TeeOption" inverseName="course" inverseEntity="TeeOption"/>
+    </entity>
+    <entity name="Hole" representedClassName="Hole" syncable="YES" codeGenerationType="class">
+        <attribute name="handicapRanking" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" defaultValueString="$(UUID)" usesScalarValueType="NO"/>
+        <attribute name="number" optional="NO" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="par" optional="NO" attributeType="Integer 16" defaultValueString="4" usesScalarValueType="YES"/>
+        <attribute name="yardage" optional="NO" attributeType="Integer 32" defaultValueString="400" usesScalarValueType="YES"/>
+        <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Course" inverseName="holes" inverseEntity="Course"/>
+    </entity>
+    <entity name="Player" representedClassName="Player" syncable="YES" codeGenerationType="class">
+        <attribute name="handicap" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="handicapRange" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" defaultValueString="$(UUID)" usesScalarValueType="NO"/>
+        <attribute name="name" optional="NO" attributeType="String" defaultValueString="New Player"/>
+        <relationship name="rounds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Round" inverseName="players" inverseEntity="Round"/>
+    </entity>
+    <entity name="Round" representedClassName="Round" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" defaultValueString="$(DATE)" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" defaultValueString="$(UUID)" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="roundType" optional="YES" attributeType="String"/>
+        <attribute name="startingHole" optional="YES" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="totalHoles" optional="YES" attributeType="Integer 16" defaultValueString="18" usesScalarValueType="YES"/>
+        <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Course" inverseName="rounds" inverseEntity="Course"/>
+        <relationship name="holeScores" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="HoleScore" inverseName="round" inverseEntity="HoleScore"/>
+        <relationship name="players" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Player" inverseName="rounds" inverseEntity="Player"/>
+        <relationship name="selectedTee" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TeeOption" inverseName="rounds" inverseEntity="TeeOption"/>
+    </entity>
+    <entity name="HoleScore" representedClassName="HoleScore" syncable="YES" codeGenerationType="class">
+        <attribute name="fairwayHit" optional="YES" attributeType="String"/>
+        <attribute name="greenInRegulation" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="hazards" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="holeNumber" optional="NO" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" defaultValueString="$(UUID)" usesScalarValueType="NO"/>
+        <attribute name="putts" optional="NO" attributeType="Integer 16" defaultValueString="2" usesScalarValueType="YES"/>
+        <attribute name="strokes" optional="NO" attributeType="Integer 16" defaultValueString="4" usesScalarValueType="YES"/>
+        <relationship name="round" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Round" inverseName="holeScores" inverseEntity="Round"/>
+    </entity>
+    <entity name="TeeOption" representedClassName="TeeOption" syncable="YES" codeGenerationType="class">
+        <attribute name="color" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" defaultValueString="$(UUID)" usesScalarValueType="NO"/>
+        <attribute name="name" optional="NO" attributeType="String" defaultValueString="White"/>
+        <attribute name="yardages" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Int]"/>
+        <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Course" inverseName="teeOptions" inverseEntity="Course"/>
+        <relationship name="rounds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Round" inverseName="selectedTee" inverseEntity="Round"/>
+    </entity>
+</model> 

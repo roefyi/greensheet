@@ -1,0 +1,1362 @@
+mak<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greensheet - Golf Score Tracker</title>
+    <link rel="icon" type="image/png" href="Assets.xcassets/Frame 5.imageset/Frame 5.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Readex+Pro:wght@160..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Journey 1: First-Time User Onboarding -->
+        
+        <!-- 1.1 App Launch & Welcome -->
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <img src="Assets.xcassets/Frame 5.imageset/Frame 5.png" alt="Greensheet App Icon" class="app-icon">
+                    </div>
+                    <h1>Greensheet</h1>
+                    <p>Track your golf journey</p>
+                </div>
+                <div class="welcome-buttons">
+                    <button class="btn-primary" onclick="showFeatureOverview()">Get Started</button>
+                    <button class="btn-secondary" onclick="showReturningUser()">I'm returning</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Overview -->
+        <div id="feature-overview" class="screen">
+            <div class="overview-content">
+                <div class="overview-slide active" data-slide="1">
+                    <div class="slide-icon">TRACK</div>
+                    <h2>Track Every Round</h2>
+                    <p>Keep detailed scorecards and watch your game improve over time</p>
+                </div>
+                <div class="overview-slide" data-slide="2">
+                    <div class="slide-icon">CALCULATE</div>
+                    <h2>Calculate Handicap</h2>
+                    <p>Automatic USGA handicap calculation as you play more rounds</p>
+                </div>
+                <div class="overview-slide" data-slide="3">
+                    <div class="slide-icon">FIND</div>
+                    <h2>Find Courses</h2>
+                    <p>Discover golf courses near you and save your favorites</p>
+                </div>
+                <div class="slide-dots">
+                    <span class="dot active" onclick="goToSlide(1)"></span>
+                    <span class="dot" onclick="goToSlide(2)"></span>
+                    <span class="dot" onclick="goToSlide(3)"></span>
+                </div>
+                <button class="btn-primary" onclick="showAccountSetup()">Continue</button>
+            </div>
+        </div>
+
+        <!-- 1.2 Account Setup -->
+        <div id="account-setup" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Create Your Profile</h2>
+            </div>
+            <div class="form-content">
+                <div class="form-group">
+                    <label for="player-name">Name</label>
+                    <input type="text" id="player-name" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="handicap">Approximate Handicap</label>
+                    <select id="handicap">
+                        <option value="">I don't know</option>
+                        <option value="0-5">0-5</option>
+                        <option value="6-10">6-10</option>
+                        <option value="11-15">11-15</option>
+                        <option value="16-20">16-20</option>
+                        <option value="21+">21+</option>
+                    </select>
+                </div>
+                <div class="cloudkit-notice">
+                    <p>Your data will sync across devices using iCloud</p>
+                </div>
+                <button class="btn-primary" onclick="showLocationPermission()">Continue</button>
+            </div>
+        </div>
+
+        <!-- 1.3 Location Permission -->
+        <div id="location-permission" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Find Courses Near You</h2>
+            </div>
+            <div class="permission-content">
+                <div class="permission-icon">LOCATION</div>
+                <p>Allow Greensheet to access your location to find golf courses in your area</p>
+                <div class="permission-benefits">
+                    <div class="benefit">
+                        <span class="benefit-icon">DISCOVER</span>
+                        <span>Discover new courses</span>
+                    </div>
+                    <div class="benefit">
+                        <span class="benefit-icon">QUICK</span>
+                        <span>Quick course setup</span>
+                    </div>
+                </div>
+                <div class="permission-buttons">
+                    <button class="btn-primary" onclick="grantLocationPermission()">Allow Location Access</button>
+                    <button class="btn-secondary" onclick="skipLocationPermission()">Skip for Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1.4 First Course Setup -->
+        <div id="first-course-setup" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Add Your First Course</h2>
+            </div>
+            <div class="course-setup-content">
+                <p>Let's add your home course to get started</p>
+                <div class="course-options">
+                    <button class="course-option" onclick="findNearbyCourses()">
+                        <span class="option-icon">NEARBY</span>
+                        <span>Find nearby courses</span>
+                    </button>
+                    <button class="course-option" onclick="addCourseManually()">
+                        <span class="option-icon">MANUAL</span>
+                        <span>Add course manually</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nearby Courses List -->
+        <div id="nearby-courses" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Nearby Courses</h2>
+            </div>
+            <div class="courses-list">
+                <div class="course-item" onclick="selectCourse('Pebble Beach Golf Links')">
+                    <div class="course-info">
+                        <h3>Pebble Beach Golf Links</h3>
+                        <p>Pebble Beach, CA</p>
+                    </div>
+                    <span class="course-distance">2.3 mi</span>
+                </div>
+                <div class="course-item" onclick="selectCourse('Spyglass Hill Golf Course')">
+                    <div class="course-info">
+                        <h3>Spyglass Hill Golf Course</h3>
+                        <p>Pebble Beach, CA</p>
+                    </div>
+                    <span class="course-distance">3.1 mi</span>
+                </div>
+                <div class="course-item" onclick="selectCourse('The Links at Spanish Bay')">
+                    <div class="course-info">
+                        <h3>The Links at Spanish Bay</h3>
+                        <p>Pebble Beach, CA</p>
+                    </div>
+                    <span class="course-distance">4.2 mi</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1.5 Course Details Entry -->
+        <div id="course-details" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Course Information</h2>
+            </div>
+            <div class="form-content">
+                <div class="form-group">
+                    <label for="course-name">Course Name</label>
+                    <input type="text" id="course-name" placeholder="Enter course name">
+                </div>
+                <div class="form-group">
+                    <label for="course-par">Total Par</label>
+                    <input type="number" id="course-par" value="72" min="54" max="90">
+                </div>
+                <div class="form-group">
+                    <label for="course-yardage">Total Yardage (optional)</label>
+                    <input type="number" id="course-yardage" placeholder="e.g., 7200">
+                </div>
+                <div class="form-group">
+                    <label for="course-holes">Number of Holes</label>
+                    <select id="course-holes">
+                        <option value="18">18 holes</option>
+                        <option value="9">9 holes</option>
+                    </select>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="add-holes-later">
+                    <label for="add-holes-later">I'll add hole details later</label>
+                </div>
+                <button class="btn-primary" onclick="saveCourse()">Save Course</button>
+            </div>
+        </div>
+
+        <!-- Journey 2: Adding Detailed Course Information -->
+        
+        <!-- 2.1 Hole-by-Hole Entry -->
+        <div id="hole-details" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Hole Details</h2>
+            </div>
+            <div class="hole-navigation">
+                <div class="hole-nav">
+                    <button class="hole-nav-btn" onclick="previousHole()">←</button>
+                    <span class="current-hole">Hole 1</span>
+                    <button class="hole-nav-btn" onclick="nextHole()">→</button>
+                </div>
+            </div>
+            <div class="hole-form">
+                <div class="form-group">
+                    <label for="hole-par">Par</label>
+                    <select id="hole-par">
+                        <option value="3">3</option>
+                        <option value="4" selected>4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="hole-yardage">Yardage</label>
+                    <input type="number" id="hole-yardage" placeholder="e.g., 420">
+                </div>
+                <div class="form-group">
+                    <label for="hole-handicap">Handicap Ranking (optional)</label>
+                    <input type="number" id="hole-handicap" min="1" max="18" placeholder="1-18">
+                </div>
+            </div>
+            <div class="hole-actions">
+                <button class="btn-secondary" onclick="skipHole()">Skip</button>
+                <button class="btn-primary" onclick="saveHole()">Save & Continue</button>
+            </div>
+        </div>
+
+        <!-- 2.2 Multiple Tee Setup -->
+        <div id="tee-setup" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Tee Options</h2>
+            </div>
+            <div class="tee-content">
+                <p>Add different tee boxes for more accurate scoring?</p>
+                <div class="tee-list">
+                    <div class="tee-item">
+                        <div class="tee-info">
+                            <h3>White Tees</h3>
+                            <p>Default</p>
+                        </div>
+                        <button class="btn-secondary" onclick="editTee('white')">Edit</button>
+                    </div>
+                    <button class="add-tee-btn" onclick="addNewTee()">
+                        <span>+</span>
+                        <span>Add Tee Option</span>
+                    </button>
+                </div>
+                <button class="btn-primary" onclick="finishCourseSetup()">Finish Setup</button>
+            </div>
+        </div>
+
+        <!-- Journey 3: Starting and Playing a Round -->
+        
+        <!-- 3.1 Quick Start from Home -->
+        <div id="home-dashboard" class="screen">
+            <div class="header">
+                <h2>Greensheet</h2>
+                <button class="settings-btn" onclick="showSettings()">SETTINGS</button>
+            </div>
+            <div class="dashboard-content">
+                <div class="handicap-display">
+                    <span class="handicap-label">Current Handicap</span>
+                    <span class="handicap-value">12.4</span>
+                </div>
+                <button class="start-round-btn" onclick="showCourseSelection()">
+                    <span class="btn-icon">START</span>
+                    <span>Play a Round</span>
+                </button>
+                <div class="recent-courses">
+                    <h3>Recent Courses</h3>
+                    <div class="course-item" onclick="quickStartRound('Pebble Beach Golf Links')">
+                        <div class="course-info">
+                            <h4>Pebble Beach Golf Links</h4>
+                            <p>Last played: 2 days ago</p>
+                        </div>
+                        <span class="last-score">+8</span>
+                    </div>
+                    <div class="course-item" onclick="quickStartRound('Spyglass Hill Golf Course')">
+                        <div class="course-info">
+                            <h4>Spyglass Hill Golf Course</h4>
+                            <p>Last played: 1 week ago</p>
+                        </div>
+                        <span class="last-score">+12</span>
+                    </div>
+                </div>
+                <div class="quick-stats">
+                    <div class="stat">
+                        <span class="stat-value">78</span>
+                        <span class="stat-label">Last Round</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">8</span>
+                        <span class="stat-label">Rounds This Month</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab Bar -->
+            <div class="tab-bar">
+                <button class="tab-item active" onclick="showHomeDashboard()">
+                    <span class="tab-icon">HOME</span>
+                    <span class="tab-label">Home</span>
+                </button>
+                <button class="tab-item" onclick="showRoundHistory()">
+                    <span class="tab-icon">ROUNDS</span>
+                    <span class="tab-label">Rounds</span>
+                </button>
+                <button class="tab-item" onclick="showHandicapDashboard()">
+                    <span class="tab-icon">HANDICAP</span>
+                    <span class="tab-label">Handicap</span>
+                </button>
+                <button class="tab-item" onclick="showCourseManagement()">
+                    <span class="tab-icon">COURSES</span>
+                    <span class="tab-label">Courses</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3.2 Course Selection -->
+        <div id="course-selection" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Select Course</h2>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search your courses..." id="course-search">
+            </div>
+            <div class="courses-list">
+                <div class="course-item" onclick="selectCourseForRound('Pebble Beach Golf Links')">
+                    <div class="course-info">
+                        <h3>Pebble Beach Golf Links</h3>
+                        <p>Par 72 • Last played: 2 days ago</p>
+                    </div>
+                    <span class="course-arrow">→</span>
+                </div>
+                <div class="course-item" onclick="selectCourseForRound('Spyglass Hill Golf Course')">
+                    <div class="course-info">
+                        <h3>Spyglass Hill Golf Course</h3>
+                        <p>Par 72 • Last played: 1 week ago</p>
+                    </div>
+                    <span class="course-arrow">→</span>
+                </div>
+                <div class="course-item" onclick="selectCourseForRound('The Links at Spanish Bay')">
+                    <div class="course-info">
+                        <h3>The Links at Spanish Bay</h3>
+                        <p>Par 72 • Last played: 2 weeks ago</p>
+                    </div>
+                    <span class="course-arrow">→</span>
+                </div>
+            </div>
+            <button class="add-course-btn" onclick="showFirstCourseSetup()">
+                <span>+</span>
+                <span>Add New Course</span>
+            </button>
+        </div>
+
+        <!-- 3.3 Pre-Round Setup -->
+        <div id="pre-round-setup" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Round Setup</h2>
+            </div>
+            <div class="setup-content">
+                <div class="course-display">
+                    <h3>Pebble Beach Golf Links</h3>
+                </div>
+                <div class="form-group">
+                    <label>Holes & Tees</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div class="tee-selector" onclick="showTeeActionSheet()">
+                                <div class="selected-option">
+                                    <div class="tee-color white"></div>
+                                    <span class="tee-text">White Tees</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="holes-tab-bar">
+                                <button class="holes-tab active" data-holes="18" onclick="selectHoles(18)">18</button>
+                                <button class="holes-tab" data-holes="9" onclick="selectHoles(9)">9</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group starting-hole-group">
+                        <div class="starting-hole-selector" onclick="showStartingHoleActionSheet()">
+                            <span class="starting-hole-text">Starting Hole 1</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="round-date">Date & Time</label>
+                    <input type="datetime-local" id="round-date">
+                </div>
+                <div class="form-group">
+                    <label>Round Type</label>
+                    <div class="round-type-selector" onclick="showRoundTypeActionSheet()">
+                        <span class="round-type-text">Stroke Play</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Players</label>
+                    <div class="players-container" id="players-container">
+                        <!-- Default player card for app user -->
+                        <div class="player-item">
+                            <div class="player-info">
+                                <div class="player-name">You</div>
+                                <div class="player-handicap">Handicap: 12.4</div>
+                            </div>
+                        </div>
+                        <!-- Additional players will be added here dynamically -->
+                    </div>
+                    <button class="add-player-btn" onclick="showAddPlayerActionSheet()">
+                        <span>+</span>
+                        <span>Write-In a Player</span>
+                    </button>
+                </div>
+                <button class="btn-primary" onclick="startRound()">Tee Off</button>
+            </div>
+        </div>
+
+        <!-- 3.4 Scorecard Interface -->
+        <div id="scorecard" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Score</h2>
+                <button class="menu-btn" onclick="showScorecardMenu()">MENU</button>
+            </div>
+            <div class="scorecard-content">
+                <div class="hole-info-compact">
+                    <div class="hole-number-compact">1</div>
+                    <div class="hole-details-compact">
+                        <div class="hole-par-compact">PAR 4</div>
+                        <div class="hole-divider"></div>
+                        <div class="hole-yardage-compact">
+                            <div class="tee-dot"></div>
+                            <span>420y</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hole-input-card">
+                    <div class="input-section">
+                        <div class="input-label">Strokes</div>
+                        <div class="input-controls">
+                            <button class="control-btn" onclick="decreaseStrokes()">-</button>
+                            <span class="input-value">4</span>
+                            <button class="control-btn" onclick="increaseStrokes()">+</button>
+                        </div>
+                    </div>
+                    <div class="input-divider"></div>
+                    <div class="input-section">
+                        <div class="input-label">Putts</div>
+                        <div class="input-controls">
+                            <button class="control-btn" onclick="decreasePutts()">-</button>
+                            <span class="input-value">2</span>
+                            <button class="control-btn" onclick="increasePutts()">+</button>
+                        </div>
+                    </div>
+                    <div class="input-divider"></div>
+                    <div class="input-section">
+                        <div class="input-label">Fairways</div>
+                        <div class="fairway-controls">
+                            <button class="control-btn" onclick="setFairway('left')">
+                                <span class="arrow-left">↖</span>
+                            </button>
+                            <button class="control-btn fairway-hit" onclick="setFairway('hit')">
+                                <div class="fairway-circle"></div>
+                            </button>
+                            <button class="control-btn" onclick="setFairway('right')">
+                                <span class="arrow-right">↗</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-divider"></div>
+                    <div class="input-section">
+                        <div class="input-label">GIR</div>
+                        <div class="gir-controls">
+                            <button class="control-btn" onclick="setGIR('left')">
+                                <span class="arrow-left">↖</span>
+                            </button>
+                            <button class="control-btn gir-hit" onclick="setGIR('hit')">
+                                <div class="gir-circle"></div>
+                            </button>
+                            <button class="control-btn" onclick="setGIR('right')">
+                                <span class="arrow-right">↗</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-divider"></div>
+                    <div class="input-section">
+                        <div class="input-label">Hazards</div>
+                        <div class="hazard-controls">
+                            <button class="control-btn hazard-btn" onclick="setHazard('penalty')">
+                                <div class="hazard-icon penalty"></div>
+                                <span class="hazard-label">Penalty</span>
+                            </button>
+                            <button class="control-btn hazard-btn" onclick="setHazard('sand')">
+                                <div class="hazard-icon sand"></div>
+                                <span class="hazard-label">Sand</span>
+                            </button>
+                            <button class="control-btn hazard-btn" onclick="setHazard('water')">
+                                <div class="hazard-icon water"></div>
+                                <span class="hazard-label">Water</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="running-totals">
+                    <div class="total-section">
+                        <span class="total-label">Front 9</span>
+                        <span class="total-score">36</span>
+                    </div>
+                    <div class="total-section">
+                        <span class="total-label">Back 9</span>
+                        <span class="total-score">--</span>
+                    </div>
+                    <div class="total-section total">
+                        <span class="total-label">Total</span>
+                        <span class="total-score">36</span>
+                    </div>
+                </div>
+                <div class="hole-navigation">
+                    <button class="nav-btn prev" onclick="previousHole()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextHole()">Next →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3.5 Round Completion -->
+        <div id="round-summary" class="screen">
+            <div class="header">
+                <h2>Round Complete!</h2>
+            </div>
+            <div class="summary-content">
+                <div class="final-score">
+                    <span class="score-label">Final Score</span>
+                    <span class="score-value">78</span>
+                    <span class="score-vs-par">+6</span>
+                </div>
+                <div class="score-breakdown">
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Front 9</span>
+                        <span class="breakdown-score">36 (+0)</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Back 9</span>
+                        <span class="breakdown-score">42 (+6)</span>
+                    </div>
+                </div>
+                <div class="round-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">12</span>
+                        <span class="stat-label">Pars</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">2</span>
+                        <span class="stat-label">Birdies</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">4</span>
+                        <span class="stat-label">Bogeys</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">0</span>
+                        <span class="stat-label">Others</span>
+                    </div>
+                </div>
+                <div class="round-stats-detailed">
+                    <div class="stats-header">
+                        <h3>Round Stats</h3>
+                        <button class="see-details-btn" onclick="showHoleByHoleView()">
+                            <span>See Hole By Hole</span>
+                            <span class="arrow">→</span>
+                        </button>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon fairways-icon">
+                            <div class="icon-circle"></div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">FAIRWAYS</div>
+                            <div class="stat-detail">10 • From 14</div>
+                        </div>
+                        <div class="stat-value">10</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-card">
+                        <div class="stat-icon putts-icon">
+                            <div class="icon-circle"></div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">PUTTS / HOLE</div>
+                            <div class="stat-detail">+1.8 • From 18</div>
+                        </div>
+                        <div class="stat-value">+1.8</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-card">
+                        <div class="stat-icon gir-icon">
+                            <div class="icon-circle"></div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">GIR</div>
+                            <div class="stat-detail">8 • From 18</div>
+                        </div>
+                        <div class="stat-value">8</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="round-notes">Round Notes (optional)</label>
+                    <textarea id="round-notes" placeholder="How was your round?"></textarea>
+                </div>
+                <div class="summary-actions">
+                    <button class="btn-secondary" onclick="shareRound()">Share</button>
+                    <button class="btn-primary" onclick="saveRound()">Save Round</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journey 4: Handicap Management -->
+        
+        <!-- 4.1 Viewing Current Handicap -->
+        <div id="handicap-dashboard" class="screen">
+            <div class="header">
+                <h2>Handicap</h2>
+                <button class="info-btn" onclick="showHandicapInfo()">INFO</button>
+            </div>
+            <div class="handicap-content">
+                <div class="handicap-display-large">
+                    <span class="handicap-value-large">12.4</span>
+                    <span class="handicap-trend improving">IMPROVING</span>
+                </div>
+                <div class="handicap-info">
+                    <p>Based on your best 8 of last 20 rounds</p>
+                    <p>You need 12 more rounds for an official handicap</p>
+                </div>
+                <div class="recent-rounds">
+                    <h3>Recent Rounds Used</h3>
+                    <div class="round-item">
+                        <span class="round-date">Today</span>
+                        <span class="round-course">Pebble Beach</span>
+                        <span class="round-score">78 (+6)</span>
+                    </div>
+                    <div class="round-item">
+                        <span class="round-date">2 days ago</span>
+                        <span class="round-course">Pebble Beach</span>
+                        <span class="round-score">82 (+10)</span>
+                    </div>
+                    <div class="round-item">
+                        <span class="round-date">1 week ago</span>
+                        <span class="round-course">Spyglass Hill</span>
+                        <span class="round-score">79 (+7)</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab Bar -->
+            <div class="tab-bar">
+                <button class="tab-item" onclick="showHomeDashboard()">
+                    <span class="tab-icon">HOME</span>
+                    <span class="tab-label">Home</span>
+                </button>
+                <button class="tab-item" onclick="showRoundHistory()">
+                    <span class="tab-icon">ROUNDS</span>
+                    <span class="tab-label">Rounds</span>
+                </button>
+                <button class="tab-item active" onclick="showHandicapDashboard()">
+                    <span class="tab-icon">HANDICAP</span>
+                    <span class="tab-label">Handicap</span>
+                </button>
+                <button class="tab-item" onclick="showCourseManagement()">
+                    <span class="tab-icon">COURSES</span>
+                    <span class="tab-label">Courses</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Journey 5: Round History and Basic Stats -->
+        
+        <!-- 5.1 Round History View -->
+        <div id="round-history" class="screen">
+            <div class="header">
+                <h2>My Rounds</h2>
+                <button class="add-btn" onclick="showAddRoundActionSheet()">+</button>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search rounds..." id="round-search">
+            </div>
+            <div class="rounds-list">
+                <div class="round-item" onclick="showRoundDetails('round1')">
+                    <div class="round-info">
+                        <h3>Pebble Beach Golf Links</h3>
+                        <p>Today • Casual Round</p>
+                    </div>
+                    <div class="round-score">
+                        <span class="score">78</span>
+                        <span class="vs-par">+6</span>
+                    </div>
+                </div>
+                <div class="round-item" onclick="showRoundDetails('round2')">
+                    <div class="round-info">
+                        <h3>Pebble Beach Golf Links</h3>
+                        <p>2 days ago • Practice Round</p>
+                    </div>
+                    <div class="round-score">
+                        <span class="score">82</span>
+                        <span class="vs-par">+10</span>
+                    </div>
+                </div>
+                <div class="round-item" onclick="showRoundDetails('round3')">
+                    <div class="round-info">
+                        <h3>Spyglass Hill Golf Course</h3>
+                        <p>1 week ago • Casual Round</p>
+                    </div>
+                    <div class="round-score">
+                        <span class="score">79</span>
+                        <span class="vs-par">+7</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab Bar -->
+            <div class="tab-bar">
+                <button class="tab-item" onclick="showHomeDashboard()">
+                    <span class="tab-icon">HOME</span>
+                    <span class="tab-label">Home</span>
+                </button>
+                <button class="tab-item active" onclick="showRoundHistory()">
+                    <span class="tab-icon">ROUNDS</span>
+                    <span class="tab-label">Rounds</span>
+                </button>
+                <button class="tab-item" onclick="showHandicapDashboard()">
+                    <span class="tab-icon">HANDICAP</span>
+                    <span class="tab-label">Handicap</span>
+                </button>
+                <button class="tab-item" onclick="showCourseManagement()">
+                    <span class="tab-icon">COURSES</span>
+                    <span class="tab-label">Courses</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 5.2 Individual Round Details -->
+        <div id="round-details" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Round Details</h2>
+                <button class="share-btn" onclick="shareRoundDetails()">SHARE</button>
+            </div>
+            <div class="round-details-content">
+                <div class="round-header">
+                    <h3>Pebble Beach Golf Links</h3>
+                    <p>Today • White Tees • Casual Round</p>
+                    <p>Playing with: John, Mike</p>
+                </div>
+                <div class="round-stats-detailed">
+                    <div class="stats-header">
+                        <h3>Round Stats</h3>
+                        <button class="see-details-btn" onclick="showHoleByHoleView()">
+                            <span>See Hole By Hole</span>
+                            <span class="arrow">→</span>
+                        </button>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon fairways-icon">
+                            <div class="icon-circle"></div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">FAIRWAYS</div>
+                            <div class="stat-detail">10 • From 14</div>
+                        </div>
+                        <div class="stat-value">10</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-card">
+                        <div class="stat-icon putts-icon">
+                            <div class="icon-circle"></div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">PUTTS / HOLE</div>
+                            <div class="stat-detail">+1.8 • From 18</div>
+                        </div>
+                        <div class="stat-value">+1.8</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-card">
+                        <div class="stat-icon gir-icon">
+                            <div class="icon-circle"></div>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">GIR</div>
+                            <div class="stat-detail">8 • From 18</div>
+                        </div>
+                        <div class="stat-value">8</div>
+                    </div>
+                </div>
+                <div class="round-stats">
+                    <h3>Scoring Breakdown</h3>
+                    <div class="stats-grid">
+                        <div class="stat">
+                            <span class="stat-value">1</span>
+                            <span class="stat-label">Eagles</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">2</span>
+                            <span class="stat-label">Birdies</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">12</span>
+                            <span class="stat-label">Pars</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">4</span>
+                            <span class="stat-label">Bogeys</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">0</span>
+                            <span class="stat-label">Double</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">0</span>
+                            <span class="stat-label">Trpl+</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="scorecard-grid">
+                    <h3>Scorecard</h3>
+                    
+                    <!-- Front Nine -->
+                    <div class="scorecard-header">
+                        <span>FRONT</span>
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>5</span>
+                        <span>6</span>
+                        <span>7</span>
+                        <span>8</span>
+                        <span>9</span>
+                    </div>
+                    <div class="scorecard-row">
+                        <span>Par</span>
+                        <span>4</span>
+                        <span>5</span>
+                        <span>4</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>5</span>
+                        <span>4</span>
+                    </div>
+                    <div class="scorecard-row">
+                        <span>Score</span>
+                        <span class="score par">4</span>
+                        <span class="score bogey">6</span>
+                        <span class="score birdie">3</span>
+                        <span class="score par">3</span>
+                        <span class="score double-bogey">6</span>
+                        <span class="score par">3</span>
+                        <span class="score par">4</span>
+                        <span class="score bogey">6</span>
+                        <span class="score eagle">2</span>
+                    </div>
+                    <div class="scorecard-row">
+                        <span>+/-</span>
+                        <span class="score-vs-par">E</span>
+                        <span class="score-vs-par bogey">+1</span>
+                        <span class="score-vs-par birdie">-1</span>
+                        <span class="score-vs-par">E</span>
+                        <span class="score-vs-par double-bogey">+2</span>
+                        <span class="score-vs-par">E</span>
+                        <span class="score-vs-par">E</span>
+                        <span class="score-vs-par bogey">+1</span>
+                        <span class="score-vs-par eagle">-2</span>
+                    </div>
+                    
+                    <!-- Back Nine -->
+                    <div class="scorecard-header">
+                        <span>BACK</span>
+                        <span>10</span>
+                        <span>11</span>
+                        <span>12</span>
+                        <span>13</span>
+                        <span>14</span>
+                        <span>15</span>
+                        <span>16</span>
+                        <span>17</span>
+                        <span>18</span>
+                    </div>
+                    <div class="scorecard-row">
+                        <span>Par</span>
+                        <span>4</span>
+                        <span>4</span>
+                        <span>3</span>
+                        <span>5</span>
+                        <span>4</span>
+                        <span>5</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>4</span>
+                    </div>
+                    <div class="scorecard-row">
+                        <span>Score</span>
+                        <span class="score par">4</span>
+                        <span class="score bogey">5</span>
+                        <span class="score par">3</span>
+                        <span class="score bogey">6</span>
+                        <span class="score par">4</span>
+                        <span class="score birdie">4</span>
+                        <span class="score par">3</span>
+                        <span class="score par">4</span>
+                        <span class="score bogey">5</span>
+                    </div>
+                    <div class="scorecard-row">
+                        <span>+/-</span>
+                        <span class="score-vs-par">E</span>
+                        <span class="score-vs-par bogey">+1</span>
+                        <span class="score-vs-par">E</span>
+                        <span class="score-vs-par bogey">+1</span>
+                        <span class="score-vs-par">E</span>
+                        <span class="score-vs-par birdie">-1</span>
+                        <span class="score-vs-par">E</span>
+                        <span class="score-vs-par">E</span>
+                        <span class="score-vs-par bogey">+1</span>
+                    </div>
+                    
+                    <!-- Total Section -->
+                    <div class="scorecard-row total-row">
+                        <span>Total</span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span>72(+2)</span>
+                    </div>
+                </div>
+                <div class="round-notes">
+                    <h3>Notes</h3>
+                    <p>Great round! Putted really well on the back 9.</p>
+                </div>
+                <div class="round-actions">
+                    <button class="btn-secondary" onclick="editRound()">Edit</button>
+                    <button class="btn-danger" onclick="deleteRound()">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5.3 Hole by Hole View -->
+        <div id="hole-by-hole" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="goBack()">←</button>
+                <h2>Hole by Hole</h2>
+            </div>
+            <div class="hole-by-hole-content">
+                <div class="round-header">
+                    <h3>Monday, Jul 21, 7:49AM</h3>
+                    <p>18 Holes • Green Briar Golf Course</p>
+                </div>
+                <div class="hole-stats-table">
+                    <div class="table-header">
+                        <div class="header-cell hole-header">
+                            <span>Hole</span>
+                        </div>
+                        <div class="header-cell strokes-header">
+                            <div class="header-icon">
+                                <div class="icon-circle">
+                                    <div class="golf-club-icon"></div>
+                                </div>
+                            </div>
+                            <span>Strokes</span>
+                        </div>
+                        <div class="header-cell fairways-header">
+                            <div class="header-icon">
+                                <div class="icon-circle">
+                                    <div class="fairway-icon"></div>
+                                </div>
+                            </div>
+                            <span>Fairways</span>
+                        </div>
+                        <div class="header-cell putts-header">
+                            <div class="header-icon">
+                                <div class="icon-circle">
+                                    <div class="putts-icon"></div>
+                                </div>
+                            </div>
+                            <span>Putts</span>
+                        </div>
+                    </div>
+                    <div class="table-body">
+                        <div class="table-row">
+                            <div class="hole-number">1</div>
+                            <div class="strokes-value">4</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">2</div>
+                            <div class="strokes-value">2</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">3</div>
+                            <div class="strokes-value">4</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">2</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">4</div>
+                            <div class="strokes-value">3</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">5</div>
+                            <div class="strokes-value">2</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">6</div>
+                            <div class="strokes-value">2</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">7</div>
+                            <div class="strokes-value">4</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">2</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">8</div>
+                            <div class="strokes-value">3</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">9</div>
+                            <div class="strokes-value">4</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">2</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">10</div>
+                            <div class="strokes-value">3</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">11</div>
+                            <div class="strokes-value">4</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">2</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">12</div>
+                            <div class="strokes-value">2</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">13</div>
+                            <div class="strokes-value">3</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">14</div>
+                            <div class="strokes-value">4</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">2</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">15</div>
+                            <div class="strokes-value">2</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">16</div>
+                            <div class="strokes-value">3</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">17</div>
+                            <div class="strokes-value">4</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">2</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="hole-number">18</div>
+                            <div class="strokes-value">3</div>
+                            <div class="fairways-value">-</div>
+                            <div class="putts-value">1</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journey 6: Basic Course Management -->
+        
+        <!-- 6.1 Course List Management -->
+        <div id="course-management" class="screen">
+            <div class="header">
+                <h2>My Courses</h2>
+                <button class="add-btn" onclick="showAddCourseActionSheet()">+</button>
+            </div>
+            <div class="courses-list">
+                <div class="course-item" onclick="editCourse('course1')">
+                    <div class="course-info">
+                        <h3>Pebble Beach Golf Links</h3>
+                        <p>Pebble Beach, CA • Par 72 • 8 times played</p>
+                    </div>
+                    <div class="course-actions">
+                        <button class="favorite-btn" onclick="toggleFavorite('course1')">FAV</button>
+                        <span class="course-arrow">→</span>
+                    </div>
+                </div>
+                <div class="course-item" onclick="editCourse('course2')">
+                    <div class="course-info">
+                        <h3>Spyglass Hill Golf Course</h3>
+                        <p>Pebble Beach, CA • Par 72 • 3 times played</p>
+                    </div>
+                    <div class="course-actions">
+                        <button class="favorite-btn" onclick="toggleFavorite('course2')">FAV</button>
+                        <span class="course-arrow">→</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Tab Bar -->
+            <div class="tab-bar">
+                <button class="tab-item" onclick="showHomeDashboard()">
+                    <span class="tab-icon">HOME</span>
+                    <span class="tab-label">Home</span>
+                </button>
+                <button class="tab-item" onclick="showRoundHistory()">
+                    <span class="tab-icon">ROUNDS</span>
+                    <span class="tab-label">Rounds</span>
+                </button>
+                <button class="tab-item" onclick="showHandicapDashboard()">
+                    <span class="tab-icon">HANDICAP</span>
+                    <span class="tab-label">Handicap</span>
+                </button>
+                <button class="tab-item active" onclick="showCourseManagement()">
+                    <span class="tab-icon">COURSES</span>
+                    <span class="tab-label">Courses</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Journey 7: Simple Score Sharing -->
+        
+        <!-- Add Course Action Sheet -->
+        <div id="add-course-action-sheet" class="action-sheet">
+            <div class="action-sheet-content">
+                <div class="action-sheet-header">
+                    <h3>Add Course</h3>
+                    <button class="close-btn" onclick="closeAddCourseActionSheet()">×</button>
+                </div>
+                <div class="action-sheet-options">
+                    <button class="action-sheet-option" onclick="findNearbyCourses()">
+                        <span class="option-icon">NEARBY</span>
+                        <span>Find nearby courses</span>
+                    </button>
+                    <button class="action-sheet-option" onclick="addCourseManually()">
+                        <span class="option-icon">MANUAL</span>
+                        <span>Add course manually</span>
+                    </button>
+                </div>
+                <button class="action-sheet-cancel" onclick="closeAddCourseActionSheet()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Add Round Action Sheet -->
+        <div id="add-round-action-sheet" class="action-sheet">
+            <div class="action-sheet-content">
+                <div class="action-sheet-header">
+                    <h3>Add Round</h3>
+                    <button class="close-btn" onclick="closeAddRoundActionSheet()">×</button>
+                </div>
+                <div class="action-sheet-options">
+                    <button class="action-sheet-option" onclick="startNewRound()">
+                        <span class="option-icon">START</span>
+                        <span>Start new round</span>
+                    </button>
+                    <button class="action-sheet-option" onclick="addPastRound()">
+                        <span class="option-icon">PAST</span>
+                        <span>Add past round</span>
+                    </button>
+                </div>
+                <button class="action-sheet-cancel" onclick="closeAddRoundActionSheet()">Cancel</button>
+            </div>
+        </div>
+
+
+
+        <!-- Share Round Modal -->
+        <div id="share-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Share Round</h3>
+                    <button class="close-btn" onclick="closeShareModal()">×</button>
+                </div>
+                <div class="share-preview">
+                    <div class="share-card">
+                        <h4>Pebble Beach Golf Links</h4>
+                        <p>Today • 78 (+6)</p>
+                        <div class="share-stats">
+                            <span>12 Pars • 2 Birdies • 4 Bogeys</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="share-options">
+                    <button class="share-option" onclick="shareViaMessage()">
+                        <span class="share-icon">MESSAGE</span>
+                        <span>Messages</span>
+                    </button>
+                    <button class="share-option" onclick="shareViaMail()">
+                        <span class="share-icon">MAIL</span>
+                        <span>Mail</span>
+                    </button>
+                    <button class="share-option" onclick="shareViaSocial()">
+                        <span class="share-icon">SOCIAL</span>
+                        <span>Social Media</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Tee Selection Action Sheet (Outside App Container) -->
+    <div id="tee-action-sheet" class="action-sheet">
+        <div class="action-sheet-content">
+            <div class="action-sheet-header">
+                <h3>Select Tees</h3>
+                <button class="close-btn" onclick="closeTeeActionSheet()">×</button>
+            </div>
+            <div class="action-sheet-options">
+                <button class="action-sheet-option" onclick="selectTeeOption('red')">
+                    <div class="tee-color red"></div>
+                    <span class="tee-text">Red Tees</span>
+                </button>
+                <button class="action-sheet-option" onclick="selectTeeOption('gold')">
+                    <div class="tee-color gold"></div>
+                    <span class="tee-text">Gold Tees</span>
+                </button>
+                <button class="action-sheet-option" onclick="selectTeeOption('white')">
+                    <div class="tee-color white"></div>
+                    <span class="tee-text">White Tees</span>
+                </button>
+                <button class="action-sheet-option" onclick="selectTeeOption('blue')">
+                    <div class="tee-color blue"></div>
+                    <span class="tee-text">Blue Tees</span>
+                </button>
+                <button class="action-sheet-option" onclick="selectTeeOption('black')">
+                    <div class="tee-color black"></div>
+                    <span class="tee-text">Black Tees</span>
+                </button>
+            </div>
+            <button class="action-sheet-cancel" onclick="closeTeeActionSheet()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Round Type Action Sheet (Outside App Container) -->
+    <div id="round-type-action-sheet" class="action-sheet">
+        <div class="action-sheet-content">
+            <div class="action-sheet-header">
+                <h3>Select Round Type</h3>
+                <button class="close-btn" onclick="closeRoundTypeActionSheet()">×</button>
+            </div>
+            <div class="action-sheet-options">
+                <button class="action-sheet-option" onclick="selectRoundType('stroke')">
+                    <span class="round-type-label">Stroke Play</span>
+                </button>
+                <button class="action-sheet-option" onclick="selectRoundType('match')">
+                    <span class="round-type-label">Match Play</span>
+                </button>
+            </div>
+            <button class="action-sheet-cancel" onclick="closeRoundTypeActionSheet()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Add Player Action Sheet (Outside App Container) -->
+    <div id="add-player-action-sheet" class="action-sheet">
+        <div class="action-sheet-content">
+            <div class="action-sheet-header">
+                <h3>Add Player</h3>
+                <button class="close-btn" onclick="closeAddPlayerActionSheet()">×</button>
+            </div>
+            <div class="add-player-form">
+                <div class="form-group">
+                    <label for="player-name-input">Player Name</label>
+                    <input type="text" id="player-name-input" placeholder="Enter player name">
+                </div>
+                <div class="form-group">
+                    <label for="player-handicap-input">Handicap (optional)</label>
+                    <input type="number" id="player-handicap-input" placeholder="e.g., 12" min="0" max="54">
+                </div>
+            </div>
+            <div class="action-sheet-actions">
+                <button class="action-sheet-cancel" onclick="closeAddPlayerActionSheet()">Cancel</button>
+                <button class="btn-primary" onclick="addPlayer()">Add Player</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Starting Hole Action Sheet (Outside App Container) -->
+    <div id="starting-hole-action-sheet" class="action-sheet">
+        <div class="action-sheet-content">
+            <div class="action-sheet-header">
+                <h3>Select Starting Hole</h3>
+                <button class="close-btn" onclick="closeStartingHoleActionSheet()">×</button>
+            </div>
+            <div class="holes-grid">
+                <button class="hole-option active" data-hole="1" onclick="selectStartingHole(1)">1</button>
+                <button class="hole-option" data-hole="2" onclick="selectStartingHole(2)">2</button>
+                <button class="hole-option" data-hole="3" onclick="selectStartingHole(3)">3</button>
+                <button class="hole-option" data-hole="4" onclick="selectStartingHole(4)">4</button>
+                <button class="hole-option" data-hole="5" onclick="selectStartingHole(5)">5</button>
+                <button class="hole-option" data-hole="6" onclick="selectStartingHole(6)">6</button>
+                <button class="hole-option" data-hole="7" onclick="selectStartingHole(7)">7</button>
+                <button class="hole-option" data-hole="8" onclick="selectStartingHole(8)">8</button>
+                <button class="hole-option" data-hole="9" onclick="selectStartingHole(9)">9</button>
+                <button class="hole-option" data-hole="10" onclick="selectStartingHole(10)">10</button>
+                <button class="hole-option" data-hole="11" onclick="selectStartingHole(11)">11</button>
+                <button class="hole-option" data-hole="12" onclick="selectStartingHole(12)">12</button>
+                <button class="hole-option" data-hole="13" onclick="selectStartingHole(13)">13</button>
+                <button class="hole-option" data-hole="14" onclick="selectStartingHole(14)">14</button>
+                <button class="hole-option" data-hole="15" onclick="selectStartingHole(15)">15</button>
+                <button class="hole-option" data-hole="16" onclick="selectStartingHole(16)">16</button>
+                <button class="hole-option" data-hole="17" onclick="selectStartingHole(17)">17</button>
+                <button class="hole-option" data-hole="18" onclick="selectStartingHole(18)">18</button>
+            </div>
+            <button class="action-sheet-cancel" onclick="closeStartingHoleActionSheet()">Cancel</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
