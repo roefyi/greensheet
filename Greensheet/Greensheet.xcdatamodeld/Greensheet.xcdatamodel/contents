@@ -32,10 +32,14 @@
     <entity name="Round" representedClassName="Round" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" defaultValueString="$(DATE)" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" defaultValueString="$(UUID)" usesScalarValueType="NO"/>
+        <attribute name="isComplete" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="notes" optional="YES" attributeType="String"/>
         <attribute name="roundType" optional="YES" attributeType="String"/>
         <attribute name="startingHole" optional="YES" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="totalHoles" optional="YES" attributeType="Integer 16" defaultValueString="18" usesScalarValueType="YES"/>
+        <attribute name="totalStrokes" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalPutts" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="greensInRegulation" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Course" inverseName="rounds" inverseEntity="Course"/>
         <relationship name="holeScores" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="HoleScore" inverseName="round" inverseEntity="HoleScore"/>
         <relationship name="players" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Player" inverseName="rounds" inverseEntity="Player"/>

@@ -79,6 +79,10 @@ class DataController: ObservableObject {
         round.startingHole = startingHole
         round.totalHoles = totalHoles
         round.roundType = "Stroke Play"
+        round.isComplete = false
+        round.totalStrokes = 0
+        round.totalPutts = 0
+        round.greensInRegulation = 0
         save()
         return round
     }
