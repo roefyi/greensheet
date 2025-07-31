@@ -432,16 +432,16 @@ struct TeeSelectorSheet: View {
                     .foregroundColor(GreensheetTheme.label)
                     .padding(.top, GreensheetTheme.spacingLarge)
                 
-                VStack(spacing: 0) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: GreensheetTheme.spacingMedium) {
                     ForEach(teeOptions, id: \.self) { tee in
                         Button(action: {
                             selectedTee = tee
                             dismiss()
                         }) {
-                            HStack(spacing: GreensheetTheme.spacingMedium) {
+                            HStack(spacing: GreensheetTheme.spacingSmall) {
                                 Circle()
                                     .fill(teeColor(for: tee))
-                                    .frame(width: 20, height: 20)
+                                    .frame(width: 16, height: 16)
                                     .overlay(
                                         Circle()
                                             .stroke(Color.gray.opacity(0.3), lineWidth: 1)
@@ -449,27 +449,16 @@ struct TeeSelectorSheet: View {
                                 
                                 Text(tee)
                                     .font(GreensheetTheme.bodyFont)
-                                    .foregroundColor(GreensheetTheme.label)
-                                
-                                Spacer()
-                                
-                                if selectedTee == tee {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(GreensheetTheme.primaryGreen)
-                                }
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(selectedTee == tee ? .white : GreensheetTheme.label)
                             }
+                            .frame(maxWidth: .infinity)
                             .padding()
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        
-                        if tee != teeOptions.last {
-                            Divider()
-                                .background(GreensheetTheme.separator)
+                            .background(selectedTee == tee ? GreensheetTheme.primaryGreen : GreensheetTheme.backgroundSecondary)
+                            .cornerRadius(GreensheetTheme.cornerRadiusSmall)
                         }
                     }
                 }
-                .background(GreensheetTheme.backgroundSecondary)
-                .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                 .padding(.horizontal, GreensheetTheme.spacingLarge)
                 
                 Spacer()
@@ -550,36 +539,23 @@ struct RoundTypeSelectorSheet: View {
                     .foregroundColor(GreensheetTheme.label)
                     .padding(.top, GreensheetTheme.spacingLarge)
                 
-                VStack(spacing: 0) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: GreensheetTheme.spacingMedium) {
                     ForEach(roundTypes, id: \.self) { type in
                         Button(action: {
                             roundType = type
                             dismiss()
                         }) {
-                            HStack {
-                                Text(type)
-                                    .font(GreensheetTheme.bodyFont)
-                                    .foregroundColor(GreensheetTheme.label)
-                                
-                                Spacer()
-                                
-                                if roundType == type {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(GreensheetTheme.primaryGreen)
-                                }
-                            }
-                            .padding()
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        
-                        if type != roundTypes.last {
-                            Divider()
-                                .background(GreensheetTheme.separator)
+                            Text(type)
+                                .font(GreensheetTheme.bodyFont)
+                                .fontWeight(.semibold)
+                                .foregroundColor(roundType == type ? .white : GreensheetTheme.label)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(roundType == type ? GreensheetTheme.primaryGreen : GreensheetTheme.backgroundSecondary)
+                                .cornerRadius(GreensheetTheme.cornerRadiusSmall)
                         }
                     }
                 }
-                .background(GreensheetTheme.backgroundSecondary)
-                .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                 .padding(.horizontal, GreensheetTheme.spacingLarge)
                 
                 Spacer()
