@@ -37,10 +37,6 @@ struct GreensheetTheme {
     static let bogey = Color(red: 197/255, green: 90/255, blue: 90/255) // #c55a5a
     
     // Semantic Colors
-    static let errorRed = Color(red: 197/255, green: 90/255, blue: 90/255) // #c55a5a
-    static let warningYellow = Color(red: 212/255, green: 168/255, blue: 83/255) // #d4a853
-    static let infoBlue = Color(red: 74/255, green: 123/255, blue: 167/255) // #4a7ba7
-    
     static let backgroundPrimary = Color.white // #ffffff
     static let backgroundSecondary = Color(red: 242/255, green: 242/255, blue: 247/255) // #f2f2f7
     static let backgroundTertiary = Color(red: 229/255, green: 229/255, blue: 234/255) // #e5e5ea
@@ -110,7 +106,7 @@ struct DangerButtonStyle: ButtonStyle {
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .padding()
-            .background(GreensheetTheme.errorRed)
+            .background(GreensheetTheme.bogey)
             .cornerRadius(GreensheetTheme.cornerRadiusMedium)
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
             .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
