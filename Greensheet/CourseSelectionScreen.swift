@@ -109,6 +109,16 @@ struct CourseSelectionRow: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: GreensheetTheme.spacingMedium) {
+                // Course Image
+                RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                    .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                    .frame(width: 60, height: 60)
+                    .overlay(
+                        Image(systemName: "flag.fill")
+                            .font(.title2)
+                            .foregroundColor(GreensheetTheme.primaryGreen)
+                    )
+                
                 VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
                     Text(course.name)
                         .font(GreensheetTheme.bodyFont)

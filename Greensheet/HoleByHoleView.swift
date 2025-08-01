@@ -37,7 +37,7 @@ struct HoleByHoleView: View {
                 ScrollView {
                     VStack(spacing: GreensheetTheme.spacingLarge) {
                         // Round Header
-                        VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
+                        VStack(alignment: .center, spacing: GreensheetTheme.spacingSmall) {
                             Text("Monday, Jul 21, 7:49AM")
                                 .font(GreensheetTheme.headlineFont)
                                 .fontWeight(.semibold)
@@ -46,7 +46,7 @@ struct HoleByHoleView: View {
                                 .font(GreensheetTheme.bodyFont)
                                 .foregroundColor(GreensheetTheme.secondaryLabel)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.horizontal, GreensheetTheme.spacingLarge)
                         
                         // Hole Stats Table
@@ -56,29 +56,29 @@ struct HoleByHoleView: View {
                                 Text("Hole")
                                     .font(GreensheetTheme.captionFont)
                                     .fontWeight(.semibold)
-                                    .foregroundColor(GreensheetTheme.secondaryLabel)
+                                    .foregroundColor(.white)
                                     .frame(width: 60, alignment: .leading)
                                 
                                 Text("Strokes")
                                     .font(GreensheetTheme.captionFont)
                                     .fontWeight(.semibold)
-                                    .foregroundColor(GreensheetTheme.secondaryLabel)
+                                    .foregroundColor(.white)
                                     .frame(maxWidth: .infinity)
                                 
                                 Text("Fairways")
                                     .font(GreensheetTheme.captionFont)
                                     .fontWeight(.semibold)
-                                    .foregroundColor(GreensheetTheme.secondaryLabel)
+                                    .foregroundColor(.white)
                                     .frame(maxWidth: .infinity)
                                 
                                 Text("Putts")
                                     .font(GreensheetTheme.captionFont)
                                     .fontWeight(.semibold)
-                                    .foregroundColor(GreensheetTheme.secondaryLabel)
+                                    .foregroundColor(.white)
                                     .frame(maxWidth: .infinity)
                             }
                             .padding()
-                            .background(GreensheetTheme.backgroundTertiary)
+                            .background(GreensheetTheme.primaryGreen)
                             
                             // Table Rows
                             ForEach(1...18, id: \.self) { hole in
@@ -86,7 +86,7 @@ struct HoleByHoleView: View {
                                     Text("\(hole)")
                                         .font(GreensheetTheme.bodyFont)
                                         .fontWeight(.medium)
-                                        .foregroundColor(GreensheetTheme.label)
+                                        .foregroundColor(GreensheetTheme.primaryGreen)
                                         .frame(width: 60, alignment: .leading)
                                     
                                     Text("\(hole <= 9 ? 4 : 5)")
@@ -96,16 +96,16 @@ struct HoleByHoleView: View {
                                     
                                     Text("-")
                                         .font(GreensheetTheme.bodyFont)
-                                        .foregroundColor(GreensheetTheme.secondaryLabel)
+                                        .foregroundColor(GreensheetTheme.primaryGreen)
                                         .frame(maxWidth: .infinity)
                                     
                                     Text("\(hole % 2 == 0 ? 1 : 2)")
                                         .font(GreensheetTheme.bodyFont)
-                                        .foregroundColor(GreensheetTheme.birdie)
+                                        .foregroundColor(GreensheetTheme.primaryGreen)
                                         .frame(maxWidth: .infinity)
                                 }
                                 .padding()
-                                .background(hole % 2 == 0 ? GreensheetTheme.backgroundSecondary : GreensheetTheme.backgroundPrimary)
+                                .background(hole % 2 == 0 ? GreensheetTheme.backgroundPrimary : GreensheetTheme.lightGreen.opacity(0.15))
                                 
                                 if hole < 18 {
                                     Divider()

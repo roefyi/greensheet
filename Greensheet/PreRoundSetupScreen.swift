@@ -180,22 +180,24 @@ struct PreRoundSetupScreen: View {
                             Spacer()
                             
                             Button(action: { showingAddPlayer = true }) {
-                                Image(systemName: "plus.circle")
-                                    .font(.title2)
-                                    .foregroundColor(GreensheetTheme.primaryGreen)
+                                HStack(spacing: GreensheetTheme.spacingSmall) {
+                                    Text("Write-in Player")
+                                        .font(GreensheetTheme.captionFont)
+                                        .foregroundColor(GreensheetTheme.primaryGreen)
+                                    Text("+")
+                                        .font(GreensheetTheme.captionFont)
+                                        .foregroundColor(GreensheetTheme.primaryGreen)
+                                }
                             }
                         }
                         .padding(.horizontal, GreensheetTheme.spacingLarge)
                         
-                        VStack(spacing: 0) {
+                        VStack(spacing: GreensheetTheme.spacingMedium) {
                             ForEach(players, id: \.id) { player in
-                                PlayerSetupRow(player: player)
-                                .padding(.vertical, GreensheetTheme.spacingSmall)
-                                
-                                if player.id != players.last?.id {
-                                    Divider()
-                                        .background(GreensheetTheme.separator)
-                                        .padding(.leading, GreensheetTheme.spacingLarge)
+                                PlayerSetupRow(player: player) {
+                                    if let index = players.firstIndex(where: { $0.id == player.id }) {
+                                        players.remove(at: index)
+                                    }
                                 }
                             }
                         }
@@ -318,55 +320,85 @@ extension PlayerSetupModel {
 
 struct PlayerSetupRow: View {
     let player: PlayerSetupModel
+    let onDelete: () -> Void
+    
+    @State private var offset: CGFloat = 0
+    @State private var isSwiped = false
     
     var body: some View {
-        HStack(spacing: GreensheetTheme.spacingMedium) {
-            // Player Avatar
-            Image(systemName: player.avatar)
-                .font(.title2)
-                .foregroundColor(GreensheetTheme.primaryGreen)
-                .frame(width: 40, height: 40)
-                .background(GreensheetTheme.primaryGreen.opacity(0.1))
-                .cornerRadius(GreensheetTheme.cornerRadiusSmall)
+        ZStack {
+            // Delete background
+            HStack {
+                Spacer()
+                Button(action: onDelete) {
+                    Image(systemName: "trash")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .frame(width: 60, height: 60)
+                        .background(Color.red)
+                        .cornerRadius(GreensheetTheme.cornerRadiusSmall)
+                }
+                .padding(.trailing, GreensheetTheme.spacingMedium)
+            }
             
-            // Player Info
-            VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
-                Text(player.name)
-                    .font(GreensheetTheme.bodyFont)
-                    .fontWeight(.semibold)
-                    .foregroundColor(GreensheetTheme.label)
+            // Player card content
+            HStack(spacing: GreensheetTheme.spacingMedium) {
+                // Player Avatar
+                Image(systemName: player.avatar)
+                    .font(.title2)
+                    .foregroundColor(GreensheetTheme.primaryGreen)
+                    .frame(width: 40, height: 40)
+                    .background(GreensheetTheme.primaryGreen.opacity(0.1))
+                    .cornerRadius(GreensheetTheme.cornerRadiusSmall)
                 
-                HStack(spacing: GreensheetTheme.spacingMedium) {
+                // Player Info
+                VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
+                    Text(player.name)
+                        .font(GreensheetTheme.bodyFont)
+                        .fontWeight(.semibold)
+                        .foregroundColor(GreensheetTheme.label)
+                    
                     Text("Handicap: \(player.handicap, specifier: "%.1f")")
                         .font(GreensheetTheme.captionFont)
                         .foregroundColor(GreensheetTheme.secondaryLabel)
-                    
-                    if let lastRound = player.lastRound {
-                        Text("•")
-                            .font(GreensheetTheme.captionFont)
-                            .foregroundColor(GreensheetTheme.secondaryLabel)
-                        
-                        Text(lastRound)
-                            .font(GreensheetTheme.captionFont)
-                            .foregroundColor(GreensheetTheme.secondaryLabel)
+                }
+                
+                Spacer()
+            }
+            .padding()
+            .background(GreensheetTheme.backgroundSecondary)
+            .cornerRadius(GreensheetTheme.cornerRadiusMedium)
+            .offset(x: offset)
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        if value.translation.width < 0 {
+                            offset = value.translation.width
+                        }
+                    }
+                    .onEnded { value in
+                        if value.translation.width < -50 {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                offset = -80
+                                isSwiped = true
+                            }
+                        } else {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                offset = 0
+                                isSwiped = false
+                            }
+                        }
+                    }
+            )
+            .onTapGesture {
+                if isSwiped {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        offset = 0
+                        isSwiped = false
                     }
                 }
             }
-            
-            Spacer()
-            
-            // Selection Indicator
-            if player.isSelected {
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundColor(GreensheetTheme.primaryGreen)
-                    .font(.title2)
-            } else {
-                Image(systemName: "circle")
-                    .foregroundColor(GreensheetTheme.tertiaryLabel)
-                    .font(.title2)
-            }
         }
-        .padding()
     }
 }
 

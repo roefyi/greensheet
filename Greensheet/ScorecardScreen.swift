@@ -227,31 +227,33 @@ struct ScorecardScreen: View {
     
     // MARK: - Tab Bar with Navigation
     private var tabBarWithNavigation: some View {
-        HStack(spacing: 0) {
-            // Previous Button
-            Button(action: {
-                if currentHole > 1 {
-                    currentHole -= 1
-                    resetHoleData()
+        HStack(spacing: 12) {
+            // Previous Button (only show from hole 2 onwards)
+            if currentHole > 1 {
+                Button(action: {
+                    if currentHole > 1 {
+                        currentHole -= 1
+                        resetHoleData()
+                    }
+                }) {
+                    HStack(spacing: GreensheetTheme.spacingSmall) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 16, weight: .semibold))
+                        Text("Previous")
+                            .font(GreensheetTheme.captionFont)
+                            .fontWeight(.semibold)
+                    }
+                    .foregroundColor(GreensheetTheme.secondaryLabel)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(GreensheetTheme.backgroundTertiary)
+                    .cornerRadius(8)
                 }
-            }) {
-                HStack(spacing: GreensheetTheme.spacingSmall) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 16, weight: .semibold))
-                    Text("Previous")
-                        .font(GreensheetTheme.captionFont)
-                        .fontWeight(.semibold)
-                }
-                .foregroundColor(currentHole == 1 ? GreensheetTheme.secondaryLabel : GreensheetTheme.primaryGreen)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
+            } else {
+                // Spacer for first hole to maintain consistent layout
+                Spacer()
+                    .frame(maxWidth: .infinity)
             }
-            .disabled(currentHole == 1)
-            
-            // Divider
-            Rectangle()
-                .fill(GreensheetTheme.separator)
-                .frame(width: 1, height: 32)
             
             // Next Button
             Button(action: {
@@ -267,13 +269,17 @@ struct ScorecardScreen: View {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 16, weight: .semibold))
                 }
-                .foregroundColor(currentHole == 18 ? GreensheetTheme.secondaryLabel : GreensheetTheme.primaryGreen)
+                .foregroundColor(currentHole == 18 ? GreensheetTheme.secondaryLabel : .white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
+                .background(currentHole == 18 ? GreensheetTheme.backgroundTertiary : GreensheetTheme.primaryGreen)
+                .cornerRadius(8)
             }
             .disabled(currentHole == 18)
         }
-        .background(GreensheetTheme.backgroundSecondary)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(GreensheetTheme.backgroundPrimary)
         .overlay(
             Rectangle()
                 .fill(GreensheetTheme.separator)

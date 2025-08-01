@@ -80,7 +80,17 @@ struct HomeDashboardScreen: View {
                                 Button(action: {
                                     appState.currentScreen = .preRoundSetup
                                 }) {
-                                    HStack {
+                                    HStack(spacing: GreensheetTheme.spacingMedium) {
+                                        // Course Image
+                                        RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                            .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                            .frame(width: 60, height: 60)
+                                            .overlay(
+                                                Image(systemName: "flag.fill")
+                                                    .font(.title2)
+                                                    .foregroundColor(GreensheetTheme.primaryGreen)
+                                            )
+                                        
                                         VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
                                             Text("Pebble Beach Golf Links")
                                                 .font(GreensheetTheme.bodyFont)
@@ -109,7 +119,17 @@ struct HomeDashboardScreen: View {
                                 Button(action: {
                                     appState.currentScreen = .preRoundSetup
                                 }) {
-                                    HStack {
+                                    HStack(spacing: GreensheetTheme.spacingMedium) {
+                                        // Course Image
+                                        RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                            .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                            .frame(width: 60, height: 60)
+                                            .overlay(
+                                                Image(systemName: "flag.fill")
+                                                    .font(.title2)
+                                                    .foregroundColor(GreensheetTheme.primaryGreen)
+                                            )
+                                        
                                         VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
                                             Text("Spyglass Hill Golf Course")
                                                 .font(GreensheetTheme.bodyFont)
@@ -141,11 +161,11 @@ struct HomeDashboardScreen: View {
                                     .foregroundColor(GreensheetTheme.primaryGreen)
                                 Text("Last Round")
                                     .font(GreensheetTheme.captionFont)
-                                    .foregroundColor(GreensheetTheme.secondaryLabel)
+                                    .foregroundColor(GreensheetTheme.primaryGreen)
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(GreensheetTheme.backgroundSecondary)
+                            .background(GreensheetTheme.lightGreen.opacity(0.15))
                             .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                             
                             VStack(spacing: GreensheetTheme.spacingSmall) {
@@ -155,11 +175,11 @@ struct HomeDashboardScreen: View {
                                     .foregroundColor(GreensheetTheme.primaryGreen)
                                 Text("Rounds This Month")
                                     .font(GreensheetTheme.captionFont)
-                                    .foregroundColor(GreensheetTheme.secondaryLabel)
+                                    .foregroundColor(GreensheetTheme.primaryGreen)
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(GreensheetTheme.backgroundSecondary)
+                            .background(GreensheetTheme.lightGreen.opacity(0.15))
                             .cornerRadius(GreensheetTheme.cornerRadiusMedium)
                         }
                         .padding(.horizontal, GreensheetTheme.spacingLarge)
@@ -197,11 +217,11 @@ struct HomeDashboardScreen: View {
                         action: { appState.currentScreen = .courseManagement }
                     )
                 }
-                .background(GreensheetTheme.backgroundSecondary)
+                .background(GreensheetTheme.backgroundPrimary)
                 .overlay(
                     Rectangle()
-                        .frame(height: 0.5)
-                        .foregroundColor(GreensheetTheme.separator),
+                        .fill(GreensheetTheme.separator)
+                        .frame(height: 1),
                     alignment: .top
                 )
             }
@@ -294,7 +314,17 @@ struct RoundHistoryView: View {
                         Button(action: {
                             appState.currentScreen = .roundDetails
                         }) {
-                            HStack {
+                            HStack(spacing: GreensheetTheme.spacingMedium) {
+                                // Course Image
+                                RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                    .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                    .frame(width: 60, height: 60)
+                                    .overlay(
+                                        Image(systemName: "flag.fill")
+                                            .font(.title2)
+                                            .foregroundColor(GreensheetTheme.primaryGreen)
+                                    )
+                                
                                 VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
                                     Text("Pebble Beach Golf Links")
                                         .font(GreensheetTheme.bodyFont)
@@ -328,7 +358,17 @@ struct RoundHistoryView: View {
                         Button(action: {
                             appState.currentScreen = .roundDetails
                         }) {
-                            HStack {
+                            HStack(spacing: GreensheetTheme.spacingMedium) {
+                                // Course Image
+                                RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                    .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                    .frame(width: 60, height: 60)
+                                    .overlay(
+                                        Image(systemName: "flag.fill")
+                                            .font(.title2)
+                                            .foregroundColor(GreensheetTheme.primaryGreen)
+                                    )
+                                
                                 VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
                                     Text("Pebble Beach Golf Links")
                                         .font(GreensheetTheme.bodyFont)
@@ -362,7 +402,17 @@ struct RoundHistoryView: View {
                         Button(action: {
                             appState.currentScreen = .roundDetails
                         }) {
-                            HStack {
+                            HStack(spacing: GreensheetTheme.spacingMedium) {
+                                // Course Image
+                                RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                    .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                    .frame(width: 60, height: 60)
+                                    .overlay(
+                                        Image(systemName: "flag.fill")
+                                            .font(.title2)
+                                            .foregroundColor(GreensheetTheme.primaryGreen)
+                                    )
+                                
                                 VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
                                     Text("Spyglass Hill Golf Course")
                                         .font(GreensheetTheme.bodyFont)
@@ -421,11 +471,11 @@ struct RoundHistoryView: View {
                         action: { appState.currentScreen = .courseManagement }
                     )
                 }
-                .background(GreensheetTheme.backgroundSecondary)
+                .background(GreensheetTheme.backgroundPrimary)
                 .overlay(
                     Rectangle()
-                        .frame(height: 0.5)
-                        .foregroundColor(GreensheetTheme.separator),
+                        .fill(GreensheetTheme.separator)
+                        .frame(height: 1),
                     alignment: .top
                 )
             }
@@ -497,7 +547,17 @@ struct HandicapDashboardView: View {
                             
                             VStack(spacing: 0) {
                                 // Round 1
-                                HStack {
+                                HStack(spacing: GreensheetTheme.spacingMedium) {
+                                    // Course Image
+                                    RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                        .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                        .frame(width: 40, height: 40)
+                                        .overlay(
+                                            Image(systemName: "flag.fill")
+                                                .font(.caption)
+                                                .foregroundColor(GreensheetTheme.primaryGreen)
+                                        )
+                                    
                                     Text("Today")
                                         .font(GreensheetTheme.bodyFont)
                                         .foregroundColor(GreensheetTheme.secondaryLabel)
@@ -517,7 +577,17 @@ struct HandicapDashboardView: View {
                                     .padding(.leading, GreensheetTheme.spacingLarge)
                                 
                                 // Round 2
-                                HStack {
+                                HStack(spacing: GreensheetTheme.spacingMedium) {
+                                    // Course Image
+                                    RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                        .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                        .frame(width: 40, height: 40)
+                                        .overlay(
+                                            Image(systemName: "flag.fill")
+                                                .font(.caption)
+                                                .foregroundColor(GreensheetTheme.primaryGreen)
+                                        )
+                                    
                                     Text("2 days ago")
                                         .font(GreensheetTheme.bodyFont)
                                         .foregroundColor(GreensheetTheme.secondaryLabel)
@@ -537,7 +607,17 @@ struct HandicapDashboardView: View {
                                     .padding(.leading, GreensheetTheme.spacingLarge)
                                 
                                 // Round 3
-                                HStack {
+                                HStack(spacing: GreensheetTheme.spacingMedium) {
+                                    // Course Image
+                                    RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                        .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                        .frame(width: 40, height: 40)
+                                        .overlay(
+                                            Image(systemName: "flag.fill")
+                                                .font(.caption)
+                                                .foregroundColor(GreensheetTheme.primaryGreen)
+                                        )
+                                    
                                     Text("1 week ago")
                                         .font(GreensheetTheme.bodyFont)
                                         .foregroundColor(GreensheetTheme.secondaryLabel)
@@ -590,11 +670,11 @@ struct HandicapDashboardView: View {
                         action: { appState.currentScreen = .courseManagement }
                     )
                 }
-                .background(GreensheetTheme.backgroundSecondary)
+                .background(GreensheetTheme.backgroundPrimary)
                 .overlay(
                     Rectangle()
-                        .frame(height: 0.5)
-                        .foregroundColor(GreensheetTheme.separator),
+                        .fill(GreensheetTheme.separator)
+                        .frame(height: 1),
                     alignment: .top
                 )
             }
@@ -635,7 +715,17 @@ struct CourseManagementView: View {
                         Button(action: {
                             appState.currentScreen = .courseDetails
                         }) {
-                            HStack {
+                            HStack(spacing: GreensheetTheme.spacingMedium) {
+                                // Course Image
+                                RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                    .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                    .frame(width: 60, height: 60)
+                                    .overlay(
+                                        Image(systemName: "flag.fill")
+                                            .font(.title2)
+                                            .foregroundColor(GreensheetTheme.primaryGreen)
+                                    )
+                                
                                 VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
                                     Text("Pebble Beach Golf Links")
                                         .font(GreensheetTheme.bodyFont)
@@ -676,7 +766,17 @@ struct CourseManagementView: View {
                         Button(action: {
                             appState.currentScreen = .courseDetails
                         }) {
-                            HStack {
+                            HStack(spacing: GreensheetTheme.spacingMedium) {
+                                // Course Image
+                                RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                    .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                    .frame(width: 60, height: 60)
+                                    .overlay(
+                                        Image(systemName: "flag.fill")
+                                            .font(.title2)
+                                            .foregroundColor(GreensheetTheme.primaryGreen)
+                                    )
+                                
                                 VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
                                     Text("Spyglass Hill Golf Course")
                                         .font(GreensheetTheme.bodyFont)
@@ -742,7 +842,7 @@ struct CourseManagementView: View {
                         action: { }
                     )
                 }
-                .background(GreensheetTheme.backgroundSecondary)
+                .background(GreensheetTheme.backgroundPrimary)
                 .overlay(
                     Rectangle()
                         .frame(height: 0.5)
@@ -998,7 +1098,7 @@ struct RoundDetailsView: View {
                                     Text("Total")
                                         .font(GreensheetTheme.bodyFont)
                                         .fontWeight(.semibold)
-                                        .foregroundColor(GreensheetTheme.label)
+                                        .foregroundColor(GreensheetTheme.primaryGreen)
                                         .frame(width: 60, alignment: .leading)
                                     
                                     ForEach(0..<9, id: \.self) { _ in
@@ -1011,7 +1111,7 @@ struct RoundDetailsView: View {
                                         .foregroundColor(GreensheetTheme.primaryGreen)
                                 }
                                 .padding()
-                                .background(GreensheetTheme.backgroundSecondary)
+                                .background(GreensheetTheme.lightGreen.opacity(0.15))
                             }
                             .background(GreensheetTheme.backgroundSecondary)
                             .cornerRadius(GreensheetTheme.cornerRadiusMedium)
@@ -1102,46 +1202,46 @@ struct ScorecardSection: View {
                 Text(title)
                     .font(GreensheetTheme.smallFont)
                     .fontWeight(.semibold)
-                    .foregroundColor(GreensheetTheme.secondaryLabel)
+                    .foregroundColor(.white)
                     .frame(width: 50, alignment: .leading)
                 
                 ForEach(holes, id: \.self) { hole in
                     Text("\(hole)")
                         .font(GreensheetTheme.smallFont)
                         .fontWeight(.semibold)
-                        .foregroundColor(GreensheetTheme.secondaryLabel)
+                        .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                 }
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 6)
-            .background(GreensheetTheme.backgroundTertiary)
+            .background(GreensheetTheme.primaryGreen)
             
             // Par Row
             HStack {
                 Text("Par")
                     .font(GreensheetTheme.smallFont)
                     .fontWeight(.medium)
-                    .foregroundColor(GreensheetTheme.label)
+                    .foregroundColor(GreensheetTheme.primaryGreen)
                     .frame(width: 50, alignment: .leading)
                 
                 ForEach(Array(par.enumerated()), id: \.offset) { index, parValue in
                     Text("\(parValue)")
                         .font(GreensheetTheme.smallFont)
-                        .foregroundColor(GreensheetTheme.secondaryLabel)
+                        .foregroundColor(GreensheetTheme.primaryGreen)
                         .frame(maxWidth: .infinity)
                 }
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 6)
-            .background(GreensheetTheme.backgroundSecondary)
+            .background(GreensheetTheme.lightGreen.opacity(0.15))
             
             // Score Row
             HStack {
                 Text("Score")
                     .font(GreensheetTheme.smallFont)
                     .fontWeight(.medium)
-                    .foregroundColor(GreensheetTheme.label)
+                    .foregroundColor(GreensheetTheme.primaryGreen)
                     .frame(width: 50, alignment: .leading)
                 
                 ForEach(Array(score.enumerated()), id: \.offset) { index, scoreValue in
@@ -1217,7 +1317,7 @@ struct ScoreDisplay: View {
                     .frame(width: 20, height: 20)
                     .overlay(
                         RoundedRectangle(cornerRadius: 1)
-                            .stroke(Color.gray, lineWidth: 1)
+                            .stroke(GreensheetTheme.primaryGreen, lineWidth: 1)
                     )
             case .doubleSquare:
                 Text("\(score)")
@@ -1227,11 +1327,11 @@ struct ScoreDisplay: View {
                     .frame(width: 20, height: 20)
                     .overlay(
                         RoundedRectangle(cornerRadius: 1)
-                            .stroke(Color.gray, lineWidth: 1)
+                            .stroke(GreensheetTheme.primaryGreen, lineWidth: 1)
                     )
                     .overlay(
                         RoundedRectangle(cornerRadius: 1)
-                            .stroke(Color.gray, lineWidth: 1)
+                            .stroke(GreensheetTheme.primaryGreen, lineWidth: 1)
                             .padding(2)
                     )
             case .circle:
@@ -1242,21 +1342,14 @@ struct ScoreDisplay: View {
                     .frame(width: 20, height: 20)
                     .overlay(
                         Circle()
-                            .stroke(Color.gray, lineWidth: 1)
+                            .stroke(GreensheetTheme.primaryGreen, lineWidth: 1)
                     )
             }
         }
     }
     
     private var scoreColor: Color {
-        let difference = score - par
-        switch difference {
-        case ..<0: return GreensheetTheme.birdie // Birdie or better
-        case 0: return GreensheetTheme.primaryGreen // Par
-        case 1: return GreensheetTheme.bogey // Bogey
-        case 2: return .red // Double bogey
-        default: return .purple // Triple or worse
-        }
+        return GreensheetTheme.primaryGreen // All scores in green
     }
     
     #Preview {

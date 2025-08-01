@@ -123,7 +123,6 @@ struct NearbyCoursesScreen: View {
             type: "Resort",
             distance: 0.5,
             rating: 4.9,
-            price: "$550",
             par: 72,
             yardage: "7075",
             isFavorite: true
@@ -133,7 +132,6 @@ struct NearbyCoursesScreen: View {
             type: "Resort",
             distance: 1.2,
             rating: 4.8,
-            price: "$395",
             par: 72,
             yardage: "6960",
             isFavorite: true
@@ -143,7 +141,6 @@ struct NearbyCoursesScreen: View {
             type: "Resort",
             distance: 2.1,
             rating: 4.7,
-            price: "$295",
             par: 72,
             yardage: "6844",
             isFavorite: false
@@ -153,7 +150,6 @@ struct NearbyCoursesScreen: View {
             type: "Public",
             distance: 3.5,
             rating: 4.2,
-            price: "$85",
             par: 72,
             yardage: "6200",
             isFavorite: false
@@ -163,7 +159,6 @@ struct NearbyCoursesScreen: View {
             type: "Public",
             distance: 4.8,
             rating: 4.1,
-            price: "$65",
             par: 72,
             yardage: "5800",
             isFavorite: false
@@ -173,7 +168,6 @@ struct NearbyCoursesScreen: View {
             type: "Private",
             distance: 5.2,
             rating: 4.9,
-            price: "Private",
             par: 72,
             yardage: "7100",
             isFavorite: false
@@ -183,7 +177,6 @@ struct NearbyCoursesScreen: View {
             type: "Private",
             distance: 6.1,
             rating: 5.0,
-            price: "Private",
             par: 72,
             yardage: "6500",
             isFavorite: false
@@ -193,7 +186,6 @@ struct NearbyCoursesScreen: View {
             type: "Public",
             distance: 8.3,
             rating: 4.3,
-            price: "$95",
             par: 72,
             yardage: "7100",
             isFavorite: false
@@ -207,7 +199,6 @@ struct NearbyCourse: Identifiable {
     let type: String
     let distance: Double
     let rating: Double
-    let price: String
     let par: Int
     let yardage: String
     let isFavorite: Bool
@@ -286,18 +277,6 @@ struct NearbyCourseRow: View {
                 }
                 
                 Spacer()
-                
-                // Price
-                VStack(alignment: .trailing, spacing: GreensheetTheme.spacingSmall) {
-                    Text(course.price)
-                        .font(GreensheetTheme.bodyFont)
-                        .fontWeight(.semibold)
-                        .foregroundColor(GreensheetTheme.label)
-                    
-                    Text("per round")
-                        .font(GreensheetTheme.smallFont)
-                        .foregroundColor(GreensheetTheme.secondaryLabel)
-                }
             }
             .padding()
             .background(isPressed ? GreensheetTheme.backgroundSecondary : Color.clear)
