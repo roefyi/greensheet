@@ -141,7 +141,7 @@ struct CourseCard: View {
 }
 
 private func createSampleCourse() -> Course {
-    let course = Course()
+    let course = Course(context: DataController().container.viewContext)
     course.name = "Pebble Beach Golf Links"
     course.location = "Pebble Beach, CA"
     course.par = 72
@@ -149,10 +149,4 @@ private func createSampleCourse() -> Course {
     course.timesPlayed = 5
     course.lastScore = 78
     return course
-}
-
-extension Course {
-    convenience init() {
-        self.init()
-    }
 } 

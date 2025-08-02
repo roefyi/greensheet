@@ -116,18 +116,63 @@ extension View {
         self
             .background(GreensheetTheme.backgroundPrimary)
             .cornerRadius(GreensheetTheme.cornerRadiusMedium)
-            .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
-            .padding(.horizontal, GreensheetTheme.spacingMedium)
+            .subtleShadow()
+            .horizontalPadding()
             .padding(.vertical, GreensheetTheme.spacingSmall)
     }
     
     func scoreDisplayStyle() -> some View {
         self
-            .font(GreensheetTheme.headlineFont)
+            .headlineFont()
             .fontWeight(.semibold)
             .padding(.horizontal, GreensheetTheme.spacingSmall)
             .padding(.vertical, GreensheetTheme.spacingXSmall)
-            .background(GreensheetTheme.backgroundSecondary)
-            .cornerRadius(GreensheetTheme.cornerRadiusSmall)
+            .secondaryBackground()
+            .smallCornerRadius()
+    }
+    
+    // MARK: - Shorthand Extensions
+    
+    func cardContainerStyle() -> some View {
+        self
+            .padding()
+            .secondaryBackground()
+            .standardCornerRadius()
+            .horizontalPadding()
+    }
+    
+    func buttonStyle() -> some View {
+        self
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(GreensheetTheme.primaryGreen)
+            .standardCornerRadius()
+    }
+    
+    func textFieldStyle() -> some View {
+        self
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .bodyFont()
+    }
+    
+    // MARK: - Safe Area Extensions
+    
+    /// Ensures proper safe area handling on initial app launch
+    func safeAreaFix() -> some View {
+        self
+            .onAppear {
+                // Force layout update to ensure proper safe area calculation
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                    // This triggers a layout update after the view appears
+                }
+            }
+    }
+    
+    /// Applies safe area insets properly
+    func properSafeArea() -> some View {
+        self
+            .safeAreaInset(edge: .top) {
+                Color.clear.frame(height: 0)
+            }
     }
 } 

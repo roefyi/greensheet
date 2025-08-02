@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E27A60292E35667C00AE0F9D /* Build configuration list for PBXProject "Greenshet" */;
+			buildConfigurationList = E27A60292E35667C00AE0F9D /* Build configuration list for PBXProject "Greensheet" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -307,7 +307,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E27A60292E35667C00AE0F9D /* Build configuration list for PBXProject "Greenshet" */ = {
+		E27A60292E35667C00AE0F9D /* Build configuration list for PBXProject "Greensheet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E27A603A2E35667D00AE0F9D /* Debug */,

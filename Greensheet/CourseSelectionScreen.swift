@@ -138,7 +138,7 @@ struct CourseSelectionRow: View {
             }
             .padding()
         }
-        .buttonStyle(CourseCardButtonStyle())
+        .buttonStyle(PlainButtonStyle())
     }
     
     private func formatLastPlayed(_ date: Date?) -> String {

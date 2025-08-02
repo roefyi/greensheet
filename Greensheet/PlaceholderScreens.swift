@@ -105,37 +105,7 @@ struct HoleDetailsScreen: View {
         .background(GreensheetTheme.backgroundPrimary)
     }
     
-    private let sampleHolePar = [4, 4, 4, 3, 4, 5, 3, 4, 4, 4, 4, 3, 4, 4, 5, 3, 4, 5]
-    private let sampleHoleYardage = [380, 516, 404, 208, 195, 523, 106, 428, 526, 495, 390, 202, 445, 580, 397, 162, 208, 543]
-    private let sampleHoleHandicap = [7, 1, 11, 17, 15, 3, 13, 9, 5, 8, 12, 18, 6, 2, 4, 16, 14, 10]
-    private let sampleHoleDescriptions = [
-        "A challenging opening hole with a dogleg right. The fairway slopes from left to right, making accuracy off the tee crucial.",
-        "One of the most famous holes in golf. A long par-4 with the Pacific Ocean as a backdrop. Accuracy and distance required.",
-        "A straightaway par-4 with bunkers guarding the green. Good approach shot placement is key.",
-        "A short but tricky par-3 with a small, undulating green protected by bunkers.",
-        "A medium-length par-4 with a narrow fairway. Trees line both sides, requiring precision off the tee.",
-        "A long par-5 with multiple landing areas. Strategic play can lead to birdie opportunities.",
-        "A short par-3 with a large green but challenging pin positions.",
-        "A classic par-4 with a slight dogleg left. The green is well-protected by bunkers.",
-        "A strong par-4 finishing hole for the front nine. Requires both power and accuracy.",
-        "A challenging par-4 with a narrow landing area. The green slopes from back to front.",
-        "A medium-length par-4 with a wide fairway but challenging green complex.",
-        "A picturesque par-3 with ocean views. The green is small and well-protected.",
-        "A long par-4 with a slight dogleg right. The approach shot is crucial for scoring.",
-        "A challenging par-4 with a narrow fairway and well-protected green.",
-        "A reachable par-5 with risk-reward options. Eagle opportunities for long hitters.",
-        "A short par-3 with a large green but challenging wind conditions.",
-        "A medium-length par-4 with a slight dogleg left. Accuracy off the tee is important.",
-        "A dramatic finishing hole with ocean views. A long par-5 that can make or break a round."
-    ]
-    
-    private let sampleTeeOptions = [
-        SampleTeeOption(name: "Championship", distance: 7075, color: "Black"),
-        SampleTeeOption(name: "Blue", distance: 6700, color: "Blue"),
-        SampleTeeOption(name: "White", distance: 6300, color: "White"),
-        SampleTeeOption(name: "Gold", distance: 5900, color: "Gold"),
-        SampleTeeOption(name: "Red", distance: 5400, color: "Red")
-    ]
+    // Sample data moved to SampleData.swift
 }
 
 struct HoleStatItem: View {
