@@ -11,7 +11,26 @@ struct HomeDashboardScreen: View {
     @EnvironmentObject var appState: AppState
     
     var body: some View {
-        VStack(spacing: 0) {
+        NavigationView {
+            VStack(spacing: 0) {
+                // Header
+                HStack {
+                    Text("Greensheet")
+                        .font(GreensheetTheme.titleFont)
+                        .fontWeight(.bold)
+                        .foregroundColor(GreensheetTheme.label)
+                    
+                    Spacer()
+                    
+                    Button("SETTINGS") {
+                        // Show settings
+                    }
+                    .font(GreensheetTheme.captionFont)
+                    .fontWeight(.medium)
+                    .foregroundColor(GreensheetTheme.primaryGreen)
+                }
+                .padding(.horizontal, GreensheetTheme.spacingLarge)
+                .padding(.top, GreensheetTheme.spacingLarge)
                 
                 ScrollView {
                     VStack(spacing: GreensheetTheme.spacingLarge) {
@@ -62,26 +81,34 @@ struct HomeDashboardScreen: View {
                                     appState.currentScreen = .preRoundSetup
                                 }) {
                                     HStack(spacing: GreensheetTheme.spacingMedium) {
-                                        CourseImage()
+                                        // Course Image
+                                        RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                            .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                            .frame(width: 60, height: 60)
+                                            .overlay(
+                                                Image(systemName: "flag.fill")
+                                                    .font(.title2)
+                                                    .foregroundColor(GreensheetTheme.primaryGreen)
+                                            )
                                         
                                         VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
                                             Text("Pebble Beach Golf Links")
-                                                .bodyFont()
+                                                .font(GreensheetTheme.bodyFont)
                                                 .fontWeight(.semibold)
-                                                .labelColor()
+                                                .foregroundColor(GreensheetTheme.label)
                                             Text("Last played: 2 days ago")
-                                                .captionFont()
-                                                .secondaryLabelColor()
+                                                .font(GreensheetTheme.captionFont)
+                                                .foregroundColor(GreensheetTheme.secondaryLabel)
                                         }
                                         Spacer()
                                         Text("+8")
-                                            .bodyFont()
+                                            .font(GreensheetTheme.bodyFont)
                                             .fontWeight(.semibold)
                                             .foregroundColor(GreensheetTheme.bogey)
                                     }
                                     .padding()
                                 }
-                                .buttonStyle(PlainButtonStyle())
+                                .buttonStyle(CourseCardButtonStyle())
                                 
                                 Divider()
                                     .background(GreensheetTheme.separator)
@@ -93,26 +120,34 @@ struct HomeDashboardScreen: View {
                                     appState.currentScreen = .preRoundSetup
                                 }) {
                                     HStack(spacing: GreensheetTheme.spacingMedium) {
-                                        CourseImage()
+                                        // Course Image
+                                        RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusSmall)
+                                            .fill(GreensheetTheme.primaryGreen.opacity(0.1))
+                                            .frame(width: 60, height: 60)
+                                            .overlay(
+                                                Image(systemName: "flag.fill")
+                                                    .font(.title2)
+                                                    .foregroundColor(GreensheetTheme.primaryGreen)
+                                            )
                                         
                                         VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
                                             Text("Spyglass Hill Golf Course")
-                                                .bodyFont()
+                                                .font(GreensheetTheme.bodyFont)
                                                 .fontWeight(.semibold)
-                                                .labelColor()
+                                                .foregroundColor(GreensheetTheme.label)
                                             Text("Last played: 1 week ago")
-                                                .captionFont()
-                                                .secondaryLabelColor()
+                                                .font(GreensheetTheme.captionFont)
+                                                .foregroundColor(GreensheetTheme.secondaryLabel)
                                         }
                                         Spacer()
                                         Text("+12")
-                                            .bodyFont()
+                                            .font(GreensheetTheme.bodyFont)
                                             .fontWeight(.semibold)
                                             .foregroundColor(GreensheetTheme.bogey)
                                     }
                                     .padding()
                                 }
-                                .buttonStyle(PlainButtonStyle())
+                                .buttonStyle(CourseCardButtonStyle())
                             }
                             .padding(.horizontal, GreensheetTheme.spacingLarge)
                         }
@@ -191,24 +226,48 @@ struct HomeDashboardScreen: View {
                 )
             }
             .background(GreensheetTheme.backgroundPrimary)
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Greensheet")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("SETTINGS") {
-                        // Show settings
-                    }
-                    .font(GreensheetTheme.captionFont)
-                    .fontWeight(.medium)
-                    .foregroundColor(GreensheetTheme.primaryGreen)
-                }
-            }
-            .safeAreaFix()
         }
+    }
+}
 
-// TabButton moved to CommonUI.swift
+struct TabButton: View {
+    let icon: String
+    let label: String
+    let isActive: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: GreensheetTheme.spacingSmall) {
+                Text(icon)
+                    .font(GreensheetTheme.smallFont)
+                    .fontWeight(.medium)
+                    .foregroundColor(isActive ? GreensheetTheme.primaryGreen : GreensheetTheme.secondaryLabel)
+                
+                Text(label)
+                    .font(GreensheetTheme.smallFont)
+                    .fontWeight(.medium)
+                    .foregroundColor(isActive ? GreensheetTheme.primaryGreen : GreensheetTheme.secondaryLabel)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, GreensheetTheme.spacingMedium)
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+}
 
-// CourseCardButtonStyle moved to CommonUI.swift
+// Custom button style for course cards with press highlighting
+struct CourseCardButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(
+                RoundedRectangle(cornerRadius: GreensheetTheme.cornerRadiusMedium)
+                    .fill(configuration.isPressed ? GreensheetTheme.backgroundSecondary : Color.clear)
+            )
+            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
 
 // MARK: - Round History View (matching HTML)
 struct RoundHistoryView: View {
@@ -288,7 +347,7 @@ struct RoundHistoryView: View {
                             }
                             .padding()
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(CourseCardButtonStyle())
                         
                         Divider()
                             .background(GreensheetTheme.separator)
@@ -332,7 +391,7 @@ struct RoundHistoryView: View {
                             }
                             .padding()
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(CourseCardButtonStyle())
                         
                         Divider()
                             .background(GreensheetTheme.separator)
@@ -376,7 +435,7 @@ struct RoundHistoryView: View {
                             }
                             .padding()
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(CourseCardButtonStyle())
                     }
                     .padding(.horizontal, GreensheetTheme.spacingLarge)
                     .padding(.top, GreensheetTheme.spacingMedium)
@@ -696,7 +755,7 @@ struct CourseManagementView: View {
                             }
                             .padding()
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(CourseCardButtonStyle())
                         
                         Divider()
                             .background(GreensheetTheme.separator)
@@ -747,7 +806,7 @@ struct CourseManagementView: View {
                             }
                             .padding()
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(CourseCardButtonStyle())
                     }
                     .padding(.horizontal, GreensheetTheme.spacingLarge)
                     .padding(.top, GreensheetTheme.spacingLarge)

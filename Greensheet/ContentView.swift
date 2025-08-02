@@ -13,15 +13,6 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             Group {
-                // Add safe area handling for initial load
-                Color.clear
-                    .frame(height: 0)
-                    .onAppear {
-                        // Force layout update to ensure proper safe area calculation
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                            // Trigger layout update
-                        }
-                    }
                 switch appState.currentScreen {
                 case .welcome:
                     WelcomeScreen()

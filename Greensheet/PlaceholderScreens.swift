@@ -136,7 +136,7 @@ struct SampleTeeOption: Identifiable {
     let id = UUID()
     let name: String
     let distance: Int
-    let color: String
+    let color: Color
 }
 
 struct TeeOptionRow: View {
@@ -145,7 +145,7 @@ struct TeeOptionRow: View {
     var body: some View {
         HStack(spacing: GreensheetTheme.spacingMedium) {
             Circle()
-                .fill(Color(tee.color.lowercased()))
+                .fill(tee.color)
                 .frame(width: 20, height: 20)
             
             VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
@@ -285,11 +285,11 @@ struct TeeSetupScreen: View {
     }
     
     private let sampleTeeOptions = [
-        SampleTeeOption(name: "Championship", distance: 7075, color: "Black"),
-        SampleTeeOption(name: "Blue", distance: 6700, color: "Blue"),
-        SampleTeeOption(name: "White", distance: 6300, color: "White"),
-        SampleTeeOption(name: "Gold", distance: 5900, color: "Gold"),
-        SampleTeeOption(name: "Red", distance: 5400, color: "Red")
+        SampleTeeOption(name: "Championship", distance: 7075, color: .black),
+        SampleTeeOption(name: "Blue", distance: 6700, color: .blue),
+        SampleTeeOption(name: "White", distance: 6300, color: .white),
+        SampleTeeOption(name: "Gold", distance: 5900, color: .yellow),
+        SampleTeeOption(name: "Red", distance: 5400, color: .red)
     ]
     
     private let samplePlayers = [
@@ -315,7 +315,7 @@ struct TeeSelectionRow: View {
         Button(action: action) {
             HStack(spacing: GreensheetTheme.spacingMedium) {
                 Circle()
-                    .fill(Color(tee.color.lowercased()))
+                    .fill(tee.color)
                     .frame(width: 20, height: 20)
                 
                 VStack(alignment: .leading, spacing: GreensheetTheme.spacingSmall) {
@@ -652,4 +652,34 @@ struct ScoreDistributionRow: View {
         .environmentObject(AppState())
 }
 
- 
+// MARK: - Sample Data
+let sampleTeeOptions = [
+    SampleTeeOption(name: "White", distance: 72, color: .white),
+    SampleTeeOption(name: "Blue", distance: 74, color: .blue),
+    SampleTeeOption(name: "Gold", distance: 70, color: .yellow),
+    SampleTeeOption(name: "Red", distance: 68, color: .red)
+]
+let sampleHolePar = [4, 3, 4, 5, 4, 3, 4, 4, 4, 4, 3, 4, 5, 4, 3, 4, 4, 4]
+let sampleHoleYardage = [380, 175, 395, 520, 410, 185, 400, 420, 390, 405, 165, 395, 535, 415, 170, 400, 425, 395]
+let sampleHoleHandicap = [7, 15, 11, 1, 9, 17, 13, 5, 3, 8, 18, 12, 2, 10, 16, 14, 6, 4]
+let sampleHoleDescriptions = [
+    "A challenging opening hole with a slight dogleg right. The fairway is narrow and requires accuracy off the tee.",
+    "A short but tricky par 3 with a small green protected by bunkers on both sides.",
+    "A straight par 4 with a wide fairway but challenging approach to a well-bunkered green.",
+    "A long par 5 that offers a chance for eagle with two good shots. The green is large and receptive.",
+    "A medium-length par 4 with a narrow landing area. The approach shot requires precision.",
+    "A short par 3 with a large green but challenging pin positions.",
+    "A straightforward par 4 with a wide fairway and accessible green.",
+    "A long par 5 with multiple risk-reward options. The green is well-protected.",
+    "A medium par 4 with a slight dogleg left. The approach shot is key to scoring well.",
+    "A solid par 4 with a wide fairway and large green. Good scoring opportunity.",
+    "A short par 3 with a small, well-bunkered green. Accuracy is crucial.",
+    "A medium-length par 4 with a narrow fairway and challenging approach.",
+    "A long par 5 with a wide fairway but challenging green complex.",
+    "A straightforward par 4 with good scoring potential.",
+    "A short par 3 with a large green and accessible pin positions.",
+    "A medium par 4 with a slight dogleg and well-protected green.",
+    "A solid par 4 with a wide fairway and large green.",
+    "A challenging finishing hole with a narrow fairway and well-bunkered green."
+]
+
