@@ -31,6 +31,7 @@ struct HomeDashboardScreen: View {
                 }
                 .padding(.horizontal, GreensheetTheme.spacingLarge)
                 .padding(.top, GreensheetTheme.spacingLarge)
+                .background(GreensheetTheme.backgroundPrimary)
                 
                 ScrollView {
                     VStack(spacing: GreensheetTheme.spacingLarge) {
@@ -227,6 +228,7 @@ struct HomeDashboardScreen: View {
             }
             .background(GreensheetTheme.backgroundPrimary)
         }
+        .safeAreaPadding(.top, 0)
     }
 }
 

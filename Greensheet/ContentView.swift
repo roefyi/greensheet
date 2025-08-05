@@ -54,7 +54,9 @@ struct ContentView: View {
                     CourseManagementView()
                 }
             }
+            .background(GreensheetTheme.backgroundPrimary)
         }
+        .navigationBarHidden(true)
         .environmentObject(appState)
     }
 }
